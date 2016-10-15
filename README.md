@@ -18,9 +18,10 @@ Each kid can see the other kids as they toss the ball around.
 Sometimes a kid will leave or a new kid will enter the group.
 
 If there is one kid left, he will toss the ball to himeslf until
-another kid wants to play catch.
+another joins.
 
-If a kid leaves who has the ball, the last kid who threw the ball will pick it up.
+If a kid leaves who has the ball, the last kid who threw the ball
+last will pick it up.
 
 ## DOCKERHUB IMAGE
 
@@ -29,66 +30,91 @@ Each kid is an instance of the `catch-microservie` DockerHub Image.
 Each instance (i.e. kid):
 
 * is lightweight.
-* knows which kid has the ball (via state).
-* can 'catch' a virtual ball from any othre kid, including himself.
-* can 'throw' a virtual ball to any other kid, including himself.
+* knows who has the ball (via state).
+* can 'catch' the ball from any other kid, including himself.
+* can 'throw' the ball to any other kid, including himself.
 * has a unique ID (URI).
-* shall randomly pick which kid to throw the ball to.
+*when he has the ball shall randomly pick which kid to throw the ball to.
 
-## STATE
+## STATE TABLE
+
+Each kid shall have the following state:
 
 * `listofkids` : List of all kids playing catch, even himself (list of URIs)
-* `whohasball` : URI of kid who hs ball
+* `whohasball` : URI of kid who has ball
 
 ## DEPLOYING DOCKER IMAGE
 
-To deploy the first kid to play catch run.  Lets call this kid steve:
+To deploy the first kid (lets call him Steve) to play catch:
 
 ```bash
 docker run jeffdecola/hello-go steveURI
 ```
 
-Becaseu steve is the first kid and all by himself, the satte shall look like
+Becaseu Steve is the first kid and all by himself, his state table shall look like
 
 * `listofkids` : steveURI
 * `whohasball` : steveURI
 
-To deploy another kid, he must know someone who is playing.
+To deploy another kid (e.g. Larry), he must know Steve:
 
 ```bash
 docker run jeffdecola/hello-go larryURI steveURI
 ```
 
-This will place the uri of the first kid in both the kiss list and whohasball state.
+Hence, Larry's state talbe shall look like.
 
 * `listofkids` : larryURI, steveURI
 * `whohasball` : unknown
 
+Larry will immediately tell Steve he want to play catch.  By doing so, Steve's state table is updated.
+
+* `listofkids` : larryURI, steveURI
+* `whohasball` : steveURI
+
+If their where more kids, Steve will then update everyone that is listed in `listofkids` as to who the new kid is.
+
 ## RETSful API using JSON
+
+To accomplish the above logic, a RESTful API with json shall be used.
 
 ### NEW KID - PUT /state
 
-When a new kid wants to play, he tells his friend.  His friend then updates
-the rest of the kids using the same PUT command.
+When a new kid wants to play, he must tell his friend who is already playing.
 
-PUT _friendsuri_/state
+PUT uri/state
 
+```json
 {
     "uri": "_kidsuri_",
     "cmd": "newkid",
 }
+```
+
+His friend then updates the rest of the kids using the same PUT command.
 
 If there is a no-reponse, then the new kid can't play catch and will leave (i.e. exit).
 
-### THROW PUT /state
+### THROW BALL - PUT /state
 
+When a kid has the ball and wants to throw it:
+
+PUT uri/state
+
+```json
 {
     "cmd": "catchball",
 }
+```
 
-The Catchnig then has to update everyone he knows that he has the ball.
+The catcher then has to update everyone he knows that he has the ball by ciong threw his
+`listofkids`.
 
+PUT uri/state
+
+```json
 {
     "uri": "_catchesuri_",
     "cmd": "ihaveball",
 }
+```
