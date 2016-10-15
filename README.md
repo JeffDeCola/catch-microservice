@@ -80,20 +80,20 @@ To accomplish the above logic, a RESTful API with json shall be used.
 
 ### NEW KID - PUT /state
 
-When a new kid wants to play, he must tell his friend who is already playing.
+When a new kid (Larry) wants to play, he must tell his friend (Steve) who is already playing.
 
 PUT uri/state
 
 ```json
 {
-    "uri": "_kidsuri_",
+    "uri": "larryURI",
     "cmd": "newkid",
 }
 ```
 
-His friend then updates the rest of the kids using the same PUT command.
+His friend Steve then updates the rest of the kids using the same PUT command.
 
-If there is a no-reponse, then the new kid can't play catch and will leave (i.e. exit).
+If there is a no-reponse, then Larry can't play catch and will leave (i.e. exit).
 
 ### THROW BALL - PUT /state
 
@@ -107,14 +107,14 @@ PUT uri/state
 }
 ```
 
-The catcher then has to update everyone he knows that he has the ball by ciong threw his
+The catcher then has to update everyone he knows that he has the ball by going threw his
 `listofkids`.
 
 PUT uri/state
 
 ```json
 {
-    "uri": "_catchesuri_",
+    "uri": "kidsURI",
     "cmd": "ihaveball",
 }
 ```
