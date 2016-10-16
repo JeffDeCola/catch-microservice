@@ -15,64 +15,68 @@
 
 Think of a group of kids on a playground playing catch.
 Each kid can see the other kids as they toss the ball around.
-Sometimes a kid will leave or a new kid will enter the group.
+Kids can come and go as they please.
 
 If there is one kid left, he will toss the ball to himeslf until
 another joins.
 
+Any kid that joins the game, must be introduced to the group via
+a friend.
+
 If a kid leaves who has the ball, the last kid who threw the ball
-last will pick it up.
+will pick it up and conmtinur the game.
 
 ## DOCKERHUB IMAGE
 
-Each kid is an instance of the `catch-microservie` DockerHub Image.
+Each "kid" is an instance of the `catch-microservie` DockerHub Image.
 
-Each instance (i.e. kid):
+Each instance (i.e. kid) has the following properties:
 
-* is lightweight.
-* knows who has the ball (via state).
-* can 'catch' the ball from any other kid, including himself.
-* can 'throw' the ball to any other kid, including himself.
-* has a unique ID (URI).
-*when he has the ball shall randomly pick which kid to throw the ball to.
+* Lightweight.
+* Knows who has the ball (via state).
+* Can 'catch' the ball from any other kid, including himself.
+* Can 'throw' the ball to any other kid, including himself.
+* Has a unique ID (URI).
+* Randomly picks which kid to throw the ball to.
 
 ## STATE TABLE
 
-Each kid shall have the following state:
+Each kid shall have the following State Table:
 
-* `listofkids` : List of all kids playing catch, even himself (list of URIs)
-* `whohasball` : URI of kid who has ball
+* `friendslist` : List of all kids playing catch, even himself (list of URIs)
+* `whohasball` : Kid who has ball (his URI)
 
 ## DEPLOYING DOCKER IMAGE
 
-To deploy the first kid (lets call him Steve) to play catch:
+To deploy the first kid (lets call him Steve):
 
 ```bash
 docker run jeffdecola/hello-go steveURI
 ```
 
-Becaseu Steve is the first kid and all by himself, his state table shall look like
+Because Steve is the first kid and all by himself, his State Table shall look like:
 
-* `listofkids` : steveURI
+* `friendslist` : steveURI
 * `whohasball` : steveURI
 
-To deploy another kid (e.g. Larry), he must know Steve:
+To deploy another kid (e.g. Larry), as explained above, he must know Steve:
 
 ```bash
 docker run jeffdecola/hello-go larryURI steveURI
 ```
 
-Hence, Larry's state talbe shall look like.
+Hence, Larry's State Table shall look like.
 
-* `listofkids` : larryURI, steveURI
+* `friendslist` : larryURI, steveURI
 * `whohasball` : unknown
 
-Larry will immediately tell Steve he want to play catch.  By doing so, Steve's state table is updated.
+Larry will immediately tell Steve he wants to play.
+By doing so, Steve's State Table is updated with Larry's info.
 
-* `listofkids` : larryURI, steveURI
+* `friendslist` : larryURI, steveURI
 * `whohasball` : steveURI
 
-If their where more kids, Steve will then update everyone that is listed in `listofkids` as to who the new kid is.
+If their are other kids, Steve will introduce Larry to all the other kids via his `friendslist`.
 
 ## RETSful API using JSON
 
@@ -86,14 +90,25 @@ PUT uri/state
 
 ```json
 {
-    "uri": "larryURI",
     "cmd": "newkid",
+    "uri": "larryURI",
 }
 ```
 
-His friend Steve then updates the rest of the kids using the same PUT command.
+Reponse
 
-If there is a no-reponse, then Larry can't play catch and will leave (i.e. exit).
+```json
+{
+  reponse: "success",
+}
+```
+
+If Larry does not get a response rom Steve, then he can't play catch and will leave (i.e. exit).
+
+Steve will updates his State Table and tells all of theother kids about
+Lary using the same PUT command.
+
+If Steve does not get a response while updating the other kids, he ignores it.
 
 ### THROW BALL - PUT /state
 
@@ -103,18 +118,34 @@ PUT uri/state
 
 ```json
 {
-    "cmd": "catchball",
+    "cmd": "catch",
 }
 ```
 
-The catcher then has to update everyone he knows that he has the ball by going threw his
-`listofkids`.
+```json
+{
+  reponse: "success",
+}
+```
+
+If the thrower does not get a reposnse, he throws it to another kid.
+
+If success, the catcher tells everyone he has the ball by going threw his
+`friendslist`.
 
 PUT uri/state
 
 ```json
 {
-    "uri": "kidsURI",
     "cmd": "ihaveball",
 }
 ```
+
+```json
+{
+  reponse: "success",
+}
+```
+
+If teh catcher does not get a response while updating the other kids,
+he ignores it.
