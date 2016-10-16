@@ -35,7 +35,7 @@ Each instance (i.e. kid) has the following properties:
 
 * Lightweight.
 * Knows who has and had the ball (via `whohasball` state).
-* Knows who playing catch (via `friendslist` state).
+* Knows who is playing catch (via `friendslist` state).
 * Can 'catch' the ball from any other kid, including himself.
 * Can 'throw' the ball to any other kid, including himself.
 * Has a unique ID (URI).
@@ -43,10 +43,10 @@ Each instance (i.e. kid) has the following properties:
 
 ## STATE TABLE
 
-Each kid shall have the following State Table:
+Each kid has the following State Table:
 
-* `friendslist` : List of all kids playing catch, even himself (list of URIs)
-* `whohasball` : The current and past 10 Kids who has ball (his URI)
+* `friendslist` : List of all kids playing, even himself (list of URIs)
+* `whohasball` : The current and past 10 Kids who have had the ball (his URI)
 
 ## STARTING AND PLAYING THE GAME
 
@@ -61,7 +61,7 @@ Because Steve is the first kid and all by himself, his State Table shall look li
 * `friendslist` : steveURI
 * `whohasball` : steveURI
 
-He will play catch with himself until another kid joins.
+He will play catch with himself until another kid joins the game.
 
 To deploy another kid (e.g. Larry), as explained above, he must know a friend (i.e. Steve):
 
@@ -74,25 +74,33 @@ Hence, Larry's State Table shall look like.
 * `friendslist` : larryURI, steveURI
 * `whohasball` : unknown
 
-Larry does not know who has the ball.  He will be updated when he catches for the first time.
-
-Larry will immediately tell Steve he wants to play.
+Larry will immediately ask Steve that he wants to play (`caniplay`).
 By doing so, Steve's State Table is updated with Larry's info.
 
 * `friendslist` : larryURI, steveURI
 * `whohasball` : steveURI
 
-When there are other kids, Steve will introduce Larry to all the other kids
-via his `friendslist`.
+Steve will update Larry's State Table with the current states (`updatestate`).
 
-When a kid catches the ball he tells everyone in his `friendslist` who has had the
-ball.  Everyone will update their `whohasball`  state.
+Steve will also introduce Larry to all the other kids
+via his `friendslist` if other kids are present (`updatestate`).
+
+When a kid catches the ball (`throw`) he tells everyone in his `friendslist` 
+that he has the ball (`updatestate`).  Everyone will update their `whohasball`  state.
 
 ## RETSful API using JSON
 
 To accomplish the above logic, a RESTful API with json shall be used.
 
-### NEW KID - PUT /state
+There are 4 basic commands:
+
+* caniplay
+* updatestate
+* throw
+* ihavetheball
+* kick
+
+### CANIPLAY - PUT /state
 
 When a new kid (Larry) wants to play, he must ask his friend (Steve) if he can play.
 
@@ -116,11 +124,34 @@ Reponse:
 If Larry does not get a response from Steve, then he can't play catch and will leave (i.e. exit).
 
 If success Steve will updates his `freindslist` and tells all of the other kids about
-Lary using the same PUT command so they can update their respective `friendslist`.
+Lary so they can update their respective `friendslist`.
 
 If Steve does not get a response while updating the other kids, he issues a kick command.
 
 Steve will also update Larry's State Table with his states.  Now Larry is up to date and in the game.
+
+### UPDTAESTATE - PUT /state
+
+When a kids wants ot update a friends state.
+
+PUT uri/state
+
+```json
+{
+    "cmd": "updatestate",
+    "friendslist": "URI",
+    "addtofriendslist": "URI",
+    "whohasball" : {"URI", "URI"}
+}
+```
+
+Reponse:
+
+```json
+{
+  "response": "success"
+}
+```
 
 ### THROW BALL - PUT /state
 
@@ -179,8 +210,8 @@ PUT uri/state
 
 ```json
 {
-    "cmd": "kidleft",
-    "uri": "leftURI"
+    "cmd": "kick",
+    "uri": "kickURI"
 }
 ```
 
