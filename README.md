@@ -99,7 +99,7 @@ Reponse
 
 ```json
 {
-  reponse: "success",
+  response: "success"
 }
 ```
 
@@ -124,7 +124,7 @@ PUT uri/state
 
 ```json
 {
-  reponse: "success",
+  response: "success"
 }
 ```
 
@@ -143,7 +143,7 @@ PUT uri/state
 
 ```json
 {
-  reponse: "success",
+  response: "success"
 }
 ```
 
