@@ -14,7 +14,9 @@
 ## CONCEPT
 
 Think of a group of kids on a playground playing catch.
+
 Each kid can see the other kids as they toss the ball around.
+
 Kids can come and go as they please.
 
 If there is one kid left, he will toss the ball to himeslf until
@@ -32,7 +34,8 @@ Each "kid" is an instance of the `catch-microservie` DockerHub Image.
 Each instance (i.e. kid) has the following properties:
 
 * Lightweight.
-* Knows who has the ball (via state).
+* Knows who has and had the ball (via `whohasball` state).
+* Knows who playing catch (via `friendslist` state).
 * Can 'catch' the ball from any other kid, including himself.
 * Can 'throw' the ball to any other kid, including himself.
 * Has a unique ID (URI).
@@ -91,13 +94,13 @@ To accomplish the above logic, a RESTful API with json shall be used.
 
 ### NEW KID - PUT /state
 
-When a new kid (Larry) wants to play, he must tell his friend (Steve) who is already playing.
+When a new kid (Larry) wants to play, he must ask his friend (Steve) if he can play.
 
 PUT uri/state
 
 ```json
 {
-    "cmd": "newkid",
+    "cmd": "caniplay",
     "uri": "larryURI"
 }
 ```
@@ -110,23 +113,25 @@ Reponse:
 }
 ```
 
-If Larry does not get a response rom Steve, then he can't play catch and will leave (i.e. exit).
+If Larry does not get a response from Steve, then he can't play catch and will leave (i.e. exit).
 
 If success Steve will updates his `freindslist` and tells all of the other kids about
 Lary using the same PUT command so they can update their respective `friendslist`.
 
-If Steve does not get a response while updating the other kids, he ignores it.
+If Steve does not get a response while updating the other kids, he issues a kick command.
+
+Steve will also update Larry's State Table with his states.  Now Larry is up to date and in the game.
 
 ### THROW BALL - PUT /state
 
-When a kid has the ball and wants to throw it, he randomwly picks someone from his friends
-list and throws it:
+When a kid has the ball and wants to throw it, he randomwly picks someone from his `friendslist`
+and throws it via:
 
 PUT uri/state
 
 ```json
 {
-    "cmd": "catch"
+    "cmd": "throw"
 }
 ```
 
@@ -138,9 +143,11 @@ Response:
 }
 ```
 
-If he does not get a reposnse, he throws it to another kid.
+If he does not get a reposnse (fail), he first kicks the kid frmo the game and then
+throws the ball to another kid.
 
-If success, the catcher tells everyone in his `friendslist` who has the ball.
+If success, the thrower updates his `whohasball` state.  The catcher subsequently tells
+everyone in his `friendslist` who has the ball as follow:
 
 PUT uri/state
 
@@ -159,6 +166,36 @@ Response:
 }
 ```
 
-If the catcher does not get a response while updating the other kids,
-he ignores it.
+On success of updating all kids, the catchre is ready to throw the ball.
+
+If the catcher does not get a response (fail) from a kid, he kicks that kid from the game.
+
+### KICK FROM GAME- PUT /state
+
+When a kid does not respond, it is assumed he left the game.  The kid who got
+the non-reponse tell sall the othre kids who it is so they can purge him from their state.
+
+PUT uri/state
+
+```json
+{
+    "cmd": "kidleft",
+    "uri": "leftURI"
+}
+```
+
+Response:
+
+```json
+{
+  "response": "success"
+}
+```
+
+### KID NOT RECEIVING ANY INFO - PUT /state
+
+If a kid left and came back, and does not receive any info, he assumes he's been
+kicked and starts to go through his friends list to ask if he can join the game as a new kid.
+
+
 
