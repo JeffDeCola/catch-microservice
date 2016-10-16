@@ -98,7 +98,7 @@ PUT uri/state
 ```json
 {
     "cmd": "newkid",
-    "uri": "larryURI",
+    "uri": "larryURI"
 }
 ```
 
@@ -106,7 +106,7 @@ Reponse:
 
 ```json
 {
-  response: "success"
+  "response": "success"
 }
 ```
 
@@ -126,7 +126,7 @@ PUT uri/state
 
 ```json
 {
-    "cmd": "catch",
+    "cmd": "catch"
 }
 ```
 
@@ -134,7 +134,7 @@ Response:
 
 ```json
 {
-  response: "success"
+  "response": "success"
 }
 ```
 
@@ -155,7 +155,7 @@ Response:
 
 ```json
 {
-  response: "success"
+  "response": "success"
 }
 ```
 
