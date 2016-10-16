@@ -18,13 +18,12 @@ Each kid can see the other kids as they toss the ball around.
 Kids can come and go as they please.
 
 If there is one kid left, he will toss the ball to himeslf until
-another joins.
+another joins the game.
 
-Any kid that joins the game, must be introduced to the group via
-a friend.
+Any kid that joins must be introduced to the entire group via a friend.
 
 If a kid leaves who has the ball, the last kid who threw the ball
-will pick it up and conmtinur the game.
+will pick it up and continue the game.
 
 ## DOCKERHUB IMAGE
 
@@ -44,9 +43,9 @@ Each instance (i.e. kid) has the following properties:
 Each kid shall have the following State Table:
 
 * `friendslist` : List of all kids playing catch, even himself (list of URIs)
-* `whohasball` : Kid who has ball (his URI)
+* `whohasball` : The current and past 10 Kids who has ball (his URI)
 
-## DEPLOYING DOCKER IMAGE
+## STARTING AND PLAYING THE GAME
 
 To deploy the first kid (lets call him Steve):
 
@@ -59,7 +58,9 @@ Because Steve is the first kid and all by himself, his State Table shall look li
 * `friendslist` : steveURI
 * `whohasball` : steveURI
 
-To deploy another kid (e.g. Larry), as explained above, he must know Steve:
+He will play catch with himself until another kid joins.
+
+To deploy another kid (e.g. Larry), as explained above, he must know a friend (i.e. Steve):
 
 ```bash
 docker run jeffdecola/hello-go larryURI steveURI
@@ -70,13 +71,19 @@ Hence, Larry's State Table shall look like.
 * `friendslist` : larryURI, steveURI
 * `whohasball` : unknown
 
+Larry does not know who has the ball.  He will be updated when he catches for the first time.
+
 Larry will immediately tell Steve he wants to play.
 By doing so, Steve's State Table is updated with Larry's info.
 
 * `friendslist` : larryURI, steveURI
 * `whohasball` : steveURI
 
-If their are other kids, Steve will introduce Larry to all the other kids via his `friendslist`.
+When there are other kids, Steve will introduce Larry to all the other kids
+via his `friendslist`.
+
+When a kid catches the ball he tells everyone in his `friendslist` who has had the
+ball.  Everyone will update their `whohasball`  state.
 
 ## RETSful API using JSON
 
@@ -95,7 +102,7 @@ PUT uri/state
 }
 ```
 
-Reponse
+Reponse:
 
 ```json
 {
@@ -105,14 +112,15 @@ Reponse
 
 If Larry does not get a response rom Steve, then he can't play catch and will leave (i.e. exit).
 
-Steve will updates his State Table and tells all of theother kids about
-Lary using the same PUT command.
+If success Steve will updates his `freindslist` and tells all of the other kids about
+Lary using the same PUT command so they can update their respective `friendslist`.
 
 If Steve does not get a response while updating the other kids, he ignores it.
 
 ### THROW BALL - PUT /state
 
-When a kid has the ball and wants to throw it:
+When a kid has the ball and wants to throw it, he randomwly picks someone from his friends
+list and throws it:
 
 PUT uri/state
 
@@ -122,24 +130,28 @@ PUT uri/state
 }
 ```
 
+Response:
+
 ```json
 {
   response: "success"
 }
 ```
 
-If the thrower does not get a reposnse, he throws it to another kid.
+If he does not get a reposnse, he throws it to another kid.
 
-If success, the catcher tells everyone he has the ball by going threw his
-`friendslist`.
+If success, the catcher tells everyone in his `friendslist` who has the ball.
 
 PUT uri/state
 
 ```json
 {
     "cmd": "ihaveball",
+    "uri": "catcherURI"
 }
 ```
+
+Response:
 
 ```json
 {
@@ -147,5 +159,6 @@ PUT uri/state
 }
 ```
 
-If teh catcher does not get a response while updating the other kids,
+If the catcher does not get a response while updating the other kids,
 he ignores it.
+
