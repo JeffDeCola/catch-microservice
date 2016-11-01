@@ -1,4 +1,4 @@
-# hello-go task-build.yml
+# catch-microservice task-build.yml
 
 platform: linux
 
@@ -9,10 +9,10 @@ image_resource:
     tag: 1.7.1
 
 inputs:
-- name: hello-go
+- name: catch-microservice
 
 outputs:
 - name: dist
 
 run:
-  path: ./hello-go/ci/scripts/build.sh
+  path: ./catch-microservice/ci/scripts/build.sh
