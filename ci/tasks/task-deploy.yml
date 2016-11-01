@@ -1,4 +1,4 @@
-# hello-go task-deploy.yml
+# catch-microservice task-deploy.yml
 
 platform: linux
 
@@ -9,7 +9,7 @@ image_resource:
     tag: 1.7.1
 
 inputs:
-- name: hello-go
+- name: catch-microservice
 
 run:
-  path: ./hello-go/ci/scripts/deploy.sh
+  path: ./catch-microservice/ci/scripts/deploy.sh

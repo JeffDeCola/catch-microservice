@@ -1,4 +1,4 @@
-# hello-go task-readme-github-pages.yml
+# catch-microservice task-readme-github-pages.yml
 
 platform: linux
 
@@ -9,10 +9,10 @@ image_resource:
     tag: 1.7.1
 
 inputs:
-- name: hello-go
+- name: catch-microservice
 
 outputs:
-- name: hello-go-updated
+- name: catch-microservice-updated
 
 run:
-  path: ./hello-go/ci/scripts/readme-github-pages.sh
+  path: ./catch-microservice/ci/scripts/readme-github-pages.sh

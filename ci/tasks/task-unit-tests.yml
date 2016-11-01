@@ -1,4 +1,4 @@
-# hello-go task-unit-tests.yml
+# catch-microservice task-unit-tests.yml
 
 platform: linux
 
@@ -9,10 +9,10 @@ image_resource:
     tag: 1.7.1
 
 inputs:
-- name: hello-go
+- name: catch-microservice
 
 outputs:
 - name: coverage-results
 
 run:
-  path: ./hello-go/ci/scripts/unit-tests.sh
+  path: ./catch-microservice/ci/scripts/unit-tests.sh
