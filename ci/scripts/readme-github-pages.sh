@@ -38,6 +38,8 @@ then
     fi
 else
     echo "docs/_includes/README.md does not exist"
+    echo "Create the _includes directory"
+    mkdir docs/_includes
 fi
 
 if [ "$commit" = "yes" ]
