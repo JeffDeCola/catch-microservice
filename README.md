@@ -161,8 +161,8 @@ Reponse:
 
 ### THROW BALL - PUT /state
 
-When a kid has the ball and wants to throw it, he randomwly picks someone from his `friendslist`
-and throws it via:
+When a kid has the ball and wants to throw it, he randomwly picks someone from
+his `friendslist` and throws it via:
 
 PUT uri/state
 
