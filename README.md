@@ -6,7 +6,8 @@
 [![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
-`catch-microservice` _is a cluster of lightweight DockerHub Images playing catch with a virtual ball._
+`catch-microservice` _is a cluster of lightweight DockerHub Images playing catch
+with a virtual ball._
 
 [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/),
 [Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
@@ -63,7 +64,8 @@ Because Steve is the first kid and all by himself, his State Table shall look li
 
 He will play catch with himself until another kid joins the game.
 
-To deploy another kid (e.g. Larry), as explained above, he must know a friend (i.e. Steve):
+To deploy another kid (e.g. Larry), as explained above, he must know a
+friend (i.e. Steve):
 
 ```bash
 docker run jeffdecola/hello-go larryURI steveURI
@@ -85,7 +87,7 @@ Steve will update Larry's State Table with the current states (`updatestate`).
 Steve will also introduce Larry to all the other kids
 via his `friendslist` if other kids are present (`updatestate`).
 
-When a kid catches the ball (`throw`) he tells everyone in his `friendslist` 
+When a kid catches the ball (`throw`) he tells everyone in his `friendslist`
 that he has the ball (`updatestate`).  Everyone will update their `whohasball`  state.
 
 ## RETSful API using JSON
@@ -102,7 +104,8 @@ There are 4 basic commands:
 
 ### CANIPLAY - PUT /state
 
-When a new kid (Larry) wants to play, he must ask his friend (Steve) if he can play.
+When a new kid (Larry) wants to play, he must ask his friend (Steve)
+if he can play.
 
 PUT uri/state
 
@@ -121,14 +124,17 @@ Reponse:
 }
 ```
 
-If Larry does not get a response from Steve, then he can't play catch and will leave (i.e. exit).
+If Larry does not get a response from Steve, then he can't play catch
+and will leave (i.e. exit).
 
-If success Steve will updates his `freindslist` and tells all of the other kids about
-Lary so they can update their respective `friendslist`.
+If success Steve will updates his `freindslist` and tells all of
+the other kids about Larry so they can update their respective `friendslist`.
 
-If Steve does not get a response while updating the other kids, he issues a kick command.
+If Steve does not get a response while updating the other kids,
+he issues a kick command.
 
-Steve will also update Larry's State Table with his states.  Now Larry is up to date and in the game.
+Steve will also update Larry's State Table with his states.
+Now Larry is up to date and in the game.
 
 ### UPDTAESTATE - PUT /state
 
@@ -177,8 +183,8 @@ Response:
 If he does not get a reposnse (fail), he first kicks the kid frmo the game and then
 throws the ball to another kid.
 
-If success, the thrower updates his `whohasball` state.  The catcher subsequently tells
-everyone in his `friendslist` who has the ball as follow:
+If success, the thrower updates his `whohasball` state.  The catcher
+subsequently tells everyone in his `friendslist` who has the ball as follow:
 
 PUT uri/state
 
@@ -199,12 +205,14 @@ Response:
 
 On success of updating all kids, the catchre is ready to throw the ball.
 
-If the catcher does not get a response (fail) from a kid, he kicks that kid from the game.
+If the catcher does not get a response (fail) from a kid, he kicks
+that kid from the game.
 
 ### KICK FROM GAME- PUT /state
 
-When a kid does not respond, it is assumed he left the game.  The kid who got
-the non-reponse tell sall the othre kids who it is so they can purge him from their state.
+When a kid does not respond, it is assumed he left the game.
+The kid who got the non-reponse tell sall the othre kids who it is so
+they can purge him from their state.
 
 PUT uri/state
 
@@ -225,8 +233,9 @@ Response:
 
 ### KID NOT RECEIVING ANY INFO - PUT /state
 
-If a kid left and came back, and does not receive any info, he assumes he's been
-kicked and starts to go through his friends list to ask if he can join the game as a new kid.
+If a kid left and came back, and does not receive any info,
+he assumes he's been kicked and starts to go through his friends
+list to ask if he can join the game as a new kid.
 
 
 
