@@ -1,7 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"html"
+	"log"
+	"net"
+	"net/http"
+	"os"
+)
+
+// HelloServer blah
+// ResponseWriter is the interface
+// Request struct that contains data like URL headers body..etc..
+func HelloServer(w http.ResponseWriter, req *http.Request) {
+	//io.WriteString(w, "hello, world!\n")
+	fmt.Fprintf(w, "Hello, %q", html.EscapeString(req.URL.Path))
+}
 
 func main() {
-	fmt.Println("Hi")
+
+	// Call this function when you see asdfasdfasdf/hello
+	http.HandleFunc("/hello", HelloServer)
+	http.HandleFunc("/monkey", HelloServer)
+
+	// Starts listening on localhost (127.0.0.1:PORT)
+	// log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(net.JoinHostPort("127.0.0.1", os.Getenv("myPORT")), nil))
 }
