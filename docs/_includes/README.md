@@ -2,73 +2,72 @@
 
 # CONCEPT
 
-Think of a group of kids on a playground playing catch.
+Think of a group of people on a playground playing catch.
 
-Each kid can see the other kids as they toss the ball around.
+There is one ball being thrown around randomly from person to person.
 
-Kids can come and go as they please.
+People can come and go as they please.
 
-If there is one kid left, he will toss the ball to himeslf until
-another joins the game.
+If there is one person left, he will toss the ball to himeslf until
+another person joins the game.
 
-Any kid that joins must be introduced to the entire group via a friend.
+Any person that joins must be introduced to the entire group via a friend.
 
-If a kid leaves who has the ball, the last kid who threw the ball
-will pick it up and continue the game.
+If a person has the ball and leave the game, another person will
+pick it up and continue playing catch.
 
 ## DOCKERHUB IMAGE
 
-Each "kid" is an instance of the `catch-microservie` DockerHub Image.
+Each "person" is an instance of the
+[catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
+DockerHub image.
 
-Each instance (i.e. kid) has the following properties:
+Each instance (i.e. people) has the following features:
 
 * Lightweight.
 * Knows who has and had the ball (via `whohasball` state).
 * Knows who is playing catch (via `friendslist` state).
-* Can 'catch' the ball from any other kid, including himself.
-* Can 'throw' the ball to any other kid, including himself.
+* Can 'catch' the ball from any other person, including himself.
+* Can 'throw' the ball to any other person, including himself.
 * Has a unique ID (URI).
-* Randomly picks which kid to throw the ball to.
+* Randomly picks which preson to throw the ball to.
 
 ## STATE TABLE
 
-Each kid has the following State Table:
+Each person has the following State Table:
 
-* `friendslist` : List of all kids playing, even himself (list of URIs)
-* `whohasball` : The current and past 10 Kids who have had the ball (his URI)
+* `friendslist` : List of all people playing, even himself (list of URIs)
+* `whohasball` : ???????? (his URI)
 
 ## STARTING AND PLAYING THE GAME
 
-To deploy the first kid (lets call him Steve):
+To deploy the first person (lets call him Steve):
 
 ```bash
-docker run jeffdecola/hello-go steveURI
+docker run jeffdecola/catch-microservice StevesID
 ```
 
 Because Steve is the first kid and all by himself, his State Table shall look like:
 
-* `friendslist` : steveURI
-* `whohasball` : steveURI
+* `friendslist` : StevesID
+* `whohasball` : StevesID
 
-He will play catch with himself until another kid joins the game.
+Steve will play catch with himself until another person joins the game.
 
-To deploy another kid (e.g. Larry), as explained above, he must know a
-friend (i.e. Steve):
+To deploy another person (e.g. Julie), she must know another person
+(e.g. Steve):
 
 ```bash
-docker run jeffdecola/hello-go larryURI steveURI
+docker run jeffdecola/hello-go larryID steveID
 ```
 
-Hence, Larry's State Table shall look like.
+Hence, Julies's State Table shall look like.
 
-* `friendslist` : larryURI, steveURI
+* `friendslist` : larryID, steveID
 * `whohasball` : unknown
 
-Larry will immediately ask Steve that he wants to play (`caniplay`).
-By doing so, Steve's State Table is updated with Larry's info.
+Steve will immediately throw the ball to julie.
 
-* `friendslist` : larryURI, steveURI
-* `whohasball` : steveURI
 
 Steve will update Larry's State Table with the current states (`updatestate`).
 
@@ -81,6 +80,8 @@ that he has the ball (`updatestate`).  Everyone will update their `whohasball`  
 ## RETSful API using JSON
 
 To accomplish the above logic, a RESTful API with json shall be used.
+
+In gom, the http package lets us map request paths to functions.
 
 There are 4 basic commands:
 
