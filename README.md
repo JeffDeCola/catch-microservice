@@ -14,7 +14,7 @@ with a virtual ball._
 
 ## CONCEPT
 
-Think of a group of people on a playground playing catch.
+Think of a group of people on a playground playing the game catch.
 
 There is one ball being thrown around randomly from person to person.
 
