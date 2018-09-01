@@ -20,7 +20,7 @@ There is one ball being thrown around randomly from person to person.
 
 People can come and go as they please.
 
-If there is one person left, he will toss the ball to himeslf until
+If there is one person left, s/he will toss the ball to himeslf until
 another person joins the game.
 
 Any person that joins must be introduced to the entire group via a friend.
