@@ -6,7 +6,7 @@
 [![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
-`catch-microservice` _is a cluster of lightweight DockerHub Images playing catch
+`catch-microservice` _is a cluster of lightweight DockerHub images playing catch
 with a virtual ball._
 
 [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/),
@@ -20,7 +20,7 @@ There is one ball being thrown around randomly from person to person.
 
 People can come and go as they please.
 
-If there is one person left, he will toss the ball to himeslf until
+If there is one person left, s/he will toss the ball to himeslf until
 another person joins the game.
 
 Any person that joins must be introduced to the entire group via a friend.
