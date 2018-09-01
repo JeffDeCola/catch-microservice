@@ -6,7 +6,7 @@
 [![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
-`catch-microservice` _is a cluster of lightweight DockerHub Images playing catch
+`catch-microservice` _is a cluster of lightweight DockerHub images playing catch
 with a virtual ball._
 
 [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/),
@@ -14,7 +14,7 @@ with a virtual ball._
 
 ## CONCEPT
 
-Think of a group of people on a playground playing catch.
+Think of a group of people playing catch on a playground.
 
 There is one ball being thrown around randomly from person to person.
 
