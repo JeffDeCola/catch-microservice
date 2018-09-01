@@ -55,7 +55,7 @@ then
     git status
     # ONLY add what is needed to protect from unforseen issues.
     git add docs/_includes/README.md
-    git commit -m "cp README.md docs/_includes/README.md for GitHub Page"
+    git commit -m "Concourse Script: cp README.md docs/_includes/README.md for GitHub Page"
     git status
 else
     rm temp-README.md
