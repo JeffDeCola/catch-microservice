@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-// HelloServer blah
+// HelloServer This is a test
 // ResponseWriter is the interface
 // Request struct that contains data like URL headers body..etc..
 func HelloServer(w http.ResponseWriter, req *http.Request) {
