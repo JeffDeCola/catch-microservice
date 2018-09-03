@@ -1,5 +1,5 @@
 {
-    "id": "catch22",
+    "id": "catch-microservice-long-run",
     "cpus": 0.1,
     "mem": 4.0,
     "container": {
