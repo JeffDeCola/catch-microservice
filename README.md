@@ -238,6 +238,3 @@ Response:
 If a kid left and came back, and does not receive any info,
 he assumes he's been kicked and starts to go through his friends
 list to ask if he can join the game as a new kid.
-
-
-
