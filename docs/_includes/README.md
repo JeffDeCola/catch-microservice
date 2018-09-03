@@ -1,6 +1,4 @@
 
-[catch-microservice Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
-
 # CONCEPT
 
 Think of a group of people on a playground playing
@@ -232,10 +230,10 @@ list to ask if he can join the game as a new kid.
 To automate the build and deployment of the `catch-microservice` docker image, a concourse pipeline
 will,
 
-* Update github webpage.
-* Unit test.
-* Build the docker image.
-* Push the docker image to DockerHub.
+* Update README.md for catch-microservice github webpage.
+* Unit Test the code.
+* Build the docker image `catch-microservice` and push to DockerHub.
+* Deploy the DockerHub image to mesos/marathon.
 
 ![IMAGE - catch-microservice concourse ci pipeline - IMAGE](pics/catch-microservice-pipeline.jpg)
 
