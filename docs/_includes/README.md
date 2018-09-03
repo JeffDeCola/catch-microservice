@@ -1,4 +1,5 @@
-[Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
+
+[catch-microservice Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
 
 # CONCEPT
 
@@ -68,7 +69,6 @@ Hence, Julies's State Table shall look like.
 * `whohasball` : unknown
 
 Steve will immediately throw the ball to julie.
-
 
 Steve will update Larry's State Table with the current states (`updatestate`).
 
@@ -229,7 +229,7 @@ list to ask if he can join the game as a new kid.
 
 ## TESTED, BUILT & PUSHED TO DOCKERHUB USING CONCOURSE
 
-To automate the build and deployment of the `hello-go` docker image, a concourse pipeline
+To automate the build and deployment of the `catch-microservice` docker image, a concourse pipeline
 will,
 
 * Update github webpage.
