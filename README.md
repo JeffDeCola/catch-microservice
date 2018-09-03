@@ -6,11 +6,12 @@
 [![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
-`catch-microservice` _is a cluster of lightweight DockerHub images playing catch
+`catch-microservice` _is a cluster of lightweight docker images playing catch
 with a virtual ball._
 
-[GitHub Webpage](https://jeffdecola.github.io/catch-microservice/),
-[Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
+[catch-microservice GitHub Webpage](https://jeffdecola.github.io/catch-microservice/)
+
+[catch-microservice Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
 
 ## CONCEPT
 
@@ -80,7 +81,6 @@ Hence, Julies's State Table shall look like.
 * `whohasball` : unknown
 
 Steve will immediately throw the ball to julie.
-
 
 Steve will update Larry's State Table with the current states (`updatestate`).
 
@@ -241,7 +241,7 @@ list to ask if he can join the game as a new kid.
 
 ## TESTED, BUILT & PUSHED TO DOCKERHUB USING CONCOURSE
 
-To automate the build and deployment of the `hello-go` docker image, a concourse pipeline
+To automate the build and deployment of the `catch-microservice` docker image, a concourse pipeline
 will,
 
 * Update github webpage.
