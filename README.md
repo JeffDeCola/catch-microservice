@@ -239,6 +239,16 @@ If a kid left and came back, and does not receive any info,
 he assumes he's been kicked and starts to go through his friends
 list to ask if he can join the game as a new kid.
 
+## TESTED, BUILT & PUSHED TO DOCKERHUB USING CONCOURSE
+
+To automate the build and deployment of the `hello-go` docker image, a concourse pipeline
+will,
+
+* Update github webpage.
+* Unit test.
+* Build the docker image.
+* Push the docker image to DockerHub.
+
 ![IMAGE - catch-microservice concourse ci pipeline - IMAGE](docs/pics/catch-microservice-pipeline.jpg)
 
 As seen in the pipeline diagram, the _resource-dump-to-dockerhub_ uses
