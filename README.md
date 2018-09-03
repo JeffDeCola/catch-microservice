@@ -71,7 +71,7 @@ To deploy another person (e.g. Julie), she must know another person
 (e.g. Steve):
 
 ```bash
-docker run jeffdecola/hello-go larryID steveID
+docker run jeffdecola/catch-microservice larryID steveID
 ```
 
 Hence, Julies's State Table shall look like.
@@ -238,3 +238,26 @@ Response:
 If a kid left and came back, and does not receive any info,
 he assumes he's been kicked and starts to go through his friends
 list to ask if he can join the game as a new kid.
+
+![IMAGE - catch-microservice concourse ci pipeline - IMAGE](docs/pics/catch-microservice-pipeline.jpg)
+
+As seen in the pipeline diagram, the _resource-dump-to-dockerhub_ uses
+the resource type
+[docker-image](https://github.com/concourse/docker-image-resource)
+to push a docker image to dockerhub.
+
+[_`resource-marathon-deploy`_](https://github.com/JeffDeCola/resource-marathon-deploy)
+deploys the newly created docker image to marathon.
+
+`catch-microservice` also contains a few extra concourse resources:
+
+* A resource (_resource-slack-alert_) uses a [docker image](https://hub.docker.com/r/cfcommunity/slack-notification-resource)
+  that will notify slack on your progress.
+* A resource (_resource-repo-status_) use a [docker image](https://hub.docker.com/r/dpb587/github-status-resource)
+  that will update your git status for that particular commit.
+* A resource ([_`resource-template`_](https://github.com/JeffDeCola/resource-template))
+  that can be used as a starting point and template for creating other concourse
+  ci resources.
+
+For more information on using concourse for continuous integration,
+refer to my cheat sheet on [concourse](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/operations-tools/continuous-integration-continuous-deployment/concourse-cheat-sheet).
