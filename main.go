@@ -7,6 +7,8 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"time"
+
 )
 
 // HelloServer This is a test
@@ -19,6 +21,14 @@ func HelloServer(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 
+	var a = 0
+
+	for {
+		a += 1
+		fmt.Println("Hello everyone, this is just a placeholder for now:", a)
+		time.Sleep(3000 * time.Millisecond)
+	}
+
 	// Call this function when you see asdfasdfasdf/hello
 	http.HandleFunc("/hello", HelloServer)
 	http.HandleFunc("/monkey", HelloServer)
@@ -26,4 +36,6 @@ func main() {
 	// Starts listening on localhost (127.0.0.1:PORT)
 	// log.Fatal(http.ListenAndServe(":8080", nil))
 	log.Fatal(http.ListenAndServe(net.JoinHostPort("127.0.0.1", os.Getenv("myPORT")), nil))
+
+
 }

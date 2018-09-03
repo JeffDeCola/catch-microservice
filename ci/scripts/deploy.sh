@@ -21,3 +21,7 @@ cd $GOPATH
 echo "List whats in top directory"
 ls -lat 
 echo ""
+
+# List whats in the app.json file
+echo "List whats in the app.json file"
+cat catch-microservice/app.json

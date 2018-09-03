@@ -203,5 +203,5 @@ resources:
 - name: resource-marathon
   type: marathon-deploy
   source:
-    app_id: catch22
+    app_id: catch-microservice-long-run
     uri: http://10.141.141.10:8080
