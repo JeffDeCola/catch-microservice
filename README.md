@@ -1,9 +1,9 @@
 # catch-microservice
 
-[![Code Climate](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/gpa.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice)
-[![Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
-[![Go Report Card](https://goreportcard.com/badge/jeffdecola/catch-microservice)](https://goreportcard.com/report/jeffdecola/catch-microservice)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JeffDeCola/catch-microservice)](https://goreportcard.com/report/github.com/JeffDeCola/catch-microservice)
 [![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3bbad863dff19a54d032/maintainability)](https://codeclimate.com/github/JeffDeCola/catch-microservice/maintainability)
+[![Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
 `catch-microservice` _is a cluster of lightweight docker images playing catch
@@ -241,8 +241,8 @@ list to ask if he can join the game as a new kid.
 
 ## TESTED, BUILT & PUSHED TO DOCKERHUB USING CONCOURSE
 
-To automate the build and deployment of the `catch-microservice` docker image, a concourse pipeline
-will,
+To automate the build and deployment of the `catch-microservice` docker image, a concourse
+pipeline will,
 
 * Update README.md for catch-microservice github webpage.
 * Unit Test the code.
