@@ -8,7 +8,7 @@ There is one ball being thrown around randomly from person to person.
 
 People can come and go as they please.
 
-If there is one person left, s/he will toss the ball to himeslf until
+If there is one person left, s/he will toss the ball to himself until
 another person joins the game.
 
 Any person that joins must be introduced to the entire group via a friend.
@@ -30,7 +30,7 @@ Each instance (i.e. people) has the following features:
 * Can 'catch' the ball from any other person, including himself.
 * Can 'throw' the ball to any other person, including himself.
 * Has a unique ID (URI).
-* Randomly picks which preson to throw the ball to.
+* Randomly picks which person to throw the ball to.
 
 ## STATE TABLE
 
@@ -199,7 +199,7 @@ that kid from the game.
 ### KICK FROM GAME- PUT /state
 
 When a kid does not respond, it is assumed he left the game.
-The kid who got the non-reponse tell sall the othre kids who it is so
+The kid who got the non-response tell all the other kids who it is so
 they can purge him from their state.
 
 PUT uri/state
@@ -227,8 +227,8 @@ list to ask if he can join the game as a new kid.
 
 ## TESTED, BUILT & PUSHED TO DOCKERHUB USING CONCOURSE
 
-To automate the build and deployment of the `catch-microservice` docker image, a concourse pipeline
-will,
+To automate the build and deployment of the `catch-microservice` docker image,
+a concourse pipeline will,
 
 * Update README.md for catch-microservice github webpage.
 * Unit Test the code.
