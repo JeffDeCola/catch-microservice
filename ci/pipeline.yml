@@ -85,8 +85,8 @@ jobs:
       file: catch-microservice/ci/tasks/task-build.yml
     - put: resource-dump-to-dockerhub
       params: { build: "dist"}
-    - put: resource-template
-      params: { param1: "Hello Jeff", param2: "How are you?" }    
+    #- put: resource-template
+    #  params: { param1: "Hello Jeff", param2: "How are you?" }    
       on_success:
         do:
         - put: resource-slack-alert
@@ -150,11 +150,11 @@ resource_types:
   source:
     repository: dpb587/github-status-resource
     tag: master
-- name: jeffs-resource
-  type: docker-image
-  source:
-   repository: jeffdecola/resource-template
-   tag: latest
+#- name: jeffs-resource
+#  type: docker-image
+#  source:
+#   repository: jeffdecola/resource-template
+#   tag: latest
 #- name: marathon-deploy
 #  type: docker-image
 #  source:
@@ -191,11 +191,11 @@ resources:
   source:
     repository: jeffdecola/catch-microservice 
     access_token: {{repo_github_token}}
-- name: resource-template
-  type: jeffs-resource
-  source:
-    source1: sourcefoo1 
-    source2: sourcefoo2
+#- name: resource-template
+#  type: jeffs-resource
+#  source:
+#    source1: sourcefoo1 
+#    source2: sourcefoo2
 #- name: resource-marathon-deploy
 #  type: marathon-deploy
 #  source:
