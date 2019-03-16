@@ -1,4 +1,4 @@
-# catch-microservice task-build.yml
+# catch-microservice task-build-push.yml
 
 platform: linux
 
@@ -15,4 +15,6 @@ outputs:
 - name: dist
 
 run:
-  path: ./catch-microservice/ci/scripts/build.sh
+  path: ./catch-microservice/ci/scripts/build-push.sh
+  # args: [-debug]
+
