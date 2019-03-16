@@ -13,3 +13,5 @@ inputs:
 
 run:
   path: ./catch-microservice/ci/scripts/deploy.sh
+  # args: [-debug]
+

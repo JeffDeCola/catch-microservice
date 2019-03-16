@@ -16,3 +16,5 @@ outputs:
 
 run:
   path: ./catch-microservice/ci/scripts/readme-github-pages.sh
+  # args: [-debug]
+

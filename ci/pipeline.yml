@@ -70,7 +70,7 @@ jobs:
       - put: resource-repo-status
         params: { state: "failure", description: "FAILED job-unit-tests in concourse ci.", commit: "catch-microservice" }
 
-- name: job-build
+- name: job-build-push
   plan:
     - get: catch-microservice
       trigger: true
@@ -78,37 +78,35 @@ jobs:
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
-        text: "From catch-microservice: STARTED job-build in concourse ci."
+        text: "From catch-microservice: STARTED job-build-push in concourse ci."
     - put: resource-repo-status
-      params: { state: "pending", description: "STARTED job-build in concourse ci.", commit: "catch-microservice" }
-    - task: task-build
-      file: catch-microservice/ci/tasks/task-build.yml
+      params: { state: "pending", description: "STARTED job-build-push in concourse ci.", commit: "catch-microservice" }
+    - task: task-build-push
+      file: catch-microservice/ci/tasks/task-build-push.yml
     - put: resource-dump-to-dockerhub
       params: { build: "dist"}
-    #- put: resource-template
-    #  params: { param1: "Hello Jeff", param2: "How are you?" }    
       on_success:
         do:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: PASSED job-build in concourse ci."
+            text: "From catch-microservice: PASSED job-build-push in concourse ci."
         - put: resource-repo-status
-          params: { state: "pending", description: "PASSED job-build in concourse ci.", commit: "catch-microservice" }
+          params: { state: "pending", description: "PASSED job-build-push in concourse ci.", commit: "catch-microservice" }
       on_failure:
         do:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: FAILED job-build in concourse ci."
+            text: "From catch-microservice: FAILED job-build-push in concourse ci."
         - put: resource-repo-status
-          params: { state: "failure", description: "FAILED job-build in concourse ci.", commit: "catch-microservice" }
+          params: { state: "failure", description: "FAILED job-build-push in concourse ci.", commit: "catch-microservice" }
 
 - name: job-deploy
   plan:
     - get: catch-microservice
       trigger: true
-      passed: [job-build]
+      passed: [job-build-push]
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
@@ -117,10 +115,8 @@ jobs:
       params: { state: "pending", description: "STARTED job-deploy in concourse ci.", commit: "catch-microservice" }
     - task: task-deploy
       file: catch-microservice/ci/tasks/task-deploy.yml
-#    - put: resource-marathon-deploy
-#      params: {app_json_path: "catch-microservice/app.json"}      
     - put: resource-marathon
-      params: {app_json: "catch-microservice/app.json", time_out: 10}      
+      params: {app_json: "catch-microservice/deploy/app.json", time_out: 10}
       on_success:
         do:
         - put: resource-slack-alert
@@ -150,16 +146,6 @@ resource_types:
   source:
     repository: dpb587/github-status-resource
     tag: master
-#- name: jeffs-resource
-#  type: docker-image
-#  source:
-#   repository: jeffdecola/resource-template
-#   tag: latest
-#- name: marathon-deploy
-#  type: docker-image
-#  source:
-#   repository: jeffdecola/resource-marathon-deploy
-#   tag: latest
 - name: marathon-deploy
   type: docker-image
   source:
@@ -191,17 +177,9 @@ resources:
   source:
     repository: jeffdecola/catch-microservice 
     access_token: {{repo_github_token}}
-#- name: resource-template
-#  type: jeffs-resource
-#  source:
-#    source1: sourcefoo1 
-#    source2: sourcefoo2
-#- name: resource-marathon-deploy
-#  type: marathon-deploy
-#  source:
-#    marathonuri: http://10.141.141.10:8080
 - name: resource-marathon
   type: marathon-deploy
   source:
     app_id: catch-microservice-long-run
     uri: http://10.141.141.10:8080
+    

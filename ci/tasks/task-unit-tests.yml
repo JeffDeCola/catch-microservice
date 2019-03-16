@@ -16,3 +16,5 @@ outputs:
 
 run:
   path: ./catch-microservice/ci/scripts/unit-tests.sh
+  # args: [-debug]
+  
