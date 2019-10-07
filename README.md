@@ -1,8 +1,7 @@
 # catch-microservice
 
 ```text
-*** THE DEPLOY IS UNDER CONSTRUCTION - CHECK BACK SOON ***
-For testing the deploy, I'm using using mesos/marathon.
+*** THE REPO IS UNDER CONSTRUCTION - CHECK BACK SOON ***
 ```
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/JeffDeCola/catch-microservice)](https://goreportcard.com/report/github.com/JeffDeCola/catch-microservice)
@@ -11,9 +10,7 @@ For testing the deploy, I'm using using mesos/marathon.
 [![Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
 
-`catch-microservice` _uses Concourse CI to test, build, push (to DockerHub)
-and deploy is a cluster of lightweight docker images playing catch
-with a virtual ball to Mesos/Marathon._
+_A cluster of lightweight docker images playing catch with a virtual ball._
 
 The `catch-microservice`
 [Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
