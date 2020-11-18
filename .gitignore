@@ -1,11 +1,17 @@
-// CONCOURSE
+# CONCOURSE
 .credentials.yml
 
-// Ignore all binaries
+# GO
+coverage.out
+
+# macOS
+.DS_Store
+
+# Ignore all binaries
 bin/*
 
-// Ignore test coverage
+# Ignore test coverage
 test/test_converage.txt
 
-// Ignore binary used for build
+# Ignore binary used for build
 build-push/catch
