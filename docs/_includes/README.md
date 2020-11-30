@@ -166,7 +166,7 @@ he issues a kick command.
 Steve will also update Larry's State Table with his states.
 Now Larry is up to date and in the game.
 
-### UPDTAESTATE - PUT /state
+### UPDATESTATE - PUT /state
 
 When a kids wants ot update a friends state.
 
@@ -374,3 +374,9 @@ This script runs the above commands
 
 This script runs the above commands in concourse
 [/ci/scripts/deploy.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/deploy.sh).
+
+## CONTINUOUS INTEGRATION & DEPLOYMENT
+
+Refer to
+[ci-README.md](https://github.com/JeffDeCola/hello-go-deploy-aks/blob/master/ci-README.md)
+for how I automated the above process.
