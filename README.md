@@ -30,6 +30,7 @@ Table of Contents,
 * [STEP 2 - BUILD (DOCKER IMAGE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image)
 * [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
 * [STEP 4 - DEPLOY (TO MARATHON)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-marathon)
+* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
 
 Documentation and references,
 
