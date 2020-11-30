@@ -414,3 +414,9 @@ This script runs the above commands
 
 This script runs the above commands in concourse
 [/ci/scripts/deploy.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/deploy.sh).
+
+## CONTINUOUS INTEGRATION & DEPLOYMENT
+
+Refer to
+[ci-README.md](https://github.com/JeffDeCola/hello-go-deploy-aks/blob/master/ci-README.md)
+for how I automated the above process.
