@@ -22,9 +22,9 @@ Table of Contents,
 * [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
 * [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
   * [CANIPLAY - PUT /state](https://github.com/JeffDeCola/catch-microservice#caniplay---put-state)
-  * [UPDTAESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updtaestate---put-state)
+  * [UPDATESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updatestate---put-state)
   * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
-  * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)     
+  * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)
   * [KID NOT RECEIVING ANY INFO - PUT /state](https://github.com/JeffDeCola/catch-microservice#kid-not-receiving-any-info---put-state)
 * [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
 * [STEP 2 - BUILD (DOCKER IMAGE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image)
@@ -206,7 +206,7 @@ he issues a kick command.
 Steve will also update Larry's State Table with his states.
 Now Larry is up to date and in the game.
 
-### UPDTAESTATE - PUT /state
+### UPDATESTATE - PUT /state
 
 When a kids wants ot update a friends state.
 
@@ -414,3 +414,9 @@ This script runs the above commands
 
 This script runs the above commands in concourse
 [/ci/scripts/deploy.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/deploy.sh).
+
+## CONTINUOUS INTEGRATION & DEPLOYMENT
+
+Refer to
+[ci-README.md](https://github.com/JeffDeCola/hello-go-deploy-aks/blob/master/ci-README.md)
+for how I automated the above process.

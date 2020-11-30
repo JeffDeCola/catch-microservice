@@ -2,14 +2,13 @@
 
 I use concourse ci to,
 
-* Updates
+* Copy and edit `README.md` to `/docs/_includes/README.md` for
   [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/)
-  * Copies, edits and updates the `README.md` file to `/docs/_includes/README.md`
 * TEST code
 * BUILD docker image
-* PUSH to dockerhub
+* PUSH docker image to dockerhub
 * DEPLOY to marathon
-* Alerts me of the progress via repo status and slack
+* Alert me of the progress via repo status and slack
 
 ## PIPELINE
 
@@ -47,10 +46,10 @@ The concourse `resources types` are,
   to PULL a repo from github
 * `resource-dump-to-dockerhub` uses a resource type
   [docker-image](https://hub.docker.com/r/concourse/docker-image-resource/)
-  to PUSH a docker image to dockerhub.
+  to PUSH a docker image to dockerhub
 * `resource-marathon` users a resource type
   [docker-image](https://hub.docker.com/r/ckaznocha/marathon-resource)
-  to DEPLOY the newly created docker image to marathon.
+  to DEPLOY the newly created docker image to marathon
 * `resource-slack-alert` uses a resource type
   [docker image](https://hub.docker.com/r/cfcommunity/slack-notification-resource)
   that will notify slack on your progress
