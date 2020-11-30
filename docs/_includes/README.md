@@ -378,5 +378,5 @@ This script runs the above commands in concourse
 ## CONTINUOUS INTEGRATION & DEPLOYMENT
 
 Refer to
-[ci-README.md](https://github.com/JeffDeCola/hello-go-deploy-aks/blob/master/ci-README.md)
+[ci-README.md](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)
 for how I automated the above process.
