@@ -25,7 +25,7 @@ go build -o bin/catch main.go
 echo ""
 
 echo "Copy the binary to /build-push because docker needs it with Dockerfile"
-cp bin/catch /build-push/.
+cp bin/catch build-push/.
 echo " "
 
 echo "cd build-push"
