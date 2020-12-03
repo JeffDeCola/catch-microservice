@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# catch-microservice example-01 create-binary.sh
+# catch-microservice create-binary.sh
 
 echo " "
 
