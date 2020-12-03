@@ -116,7 +116,7 @@ jobs:
     - task: task-deploy
       file: catch-microservice/ci/tasks/task-deploy.yml
     - put: resource-marathon
-      params: {app_json: "catch-microservice/deploy/app.json", time_out: 10}
+      params: {app_json: "catch-microservice/example-01/deploy-marathon/app.json", time_out: 10}
       on_success:
         do:
         - put: resource-slack-alert

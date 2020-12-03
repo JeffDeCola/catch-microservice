@@ -6,7 +6,7 @@ I use concourse ci to,
   [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/)
 * TEST code
 * BUILD docker image
-* PUSH docker image to dockerhub
+* PUSH to dockerhub
 * DEPLOY to marathon
 * Alert me of the progress via repo status and slack
 
@@ -46,10 +46,10 @@ The concourse `resources types` are,
   to PULL a repo from github
 * `resource-dump-to-dockerhub` uses a resource type
   [docker-image](https://hub.docker.com/r/concourse/docker-image-resource/)
-  to PUSH a docker image to dockerhub
+  to PUSH a docker image to dockerhub.
 * `resource-marathon` users a resource type
   [docker-image](https://hub.docker.com/r/ckaznocha/marathon-resource)
-  to DEPLOY the newly created docker image to marathon
+  to DEPLOY the newly created docker image to marathon.
 * `resource-slack-alert` uses a resource type
   [docker image](https://hub.docker.com/r/cfcommunity/slack-notification-resource)
   that will notify slack on your progress
