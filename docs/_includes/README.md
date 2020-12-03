@@ -3,7 +3,7 @@ _built with
 
 # PREREQUISITES
 
-For this exercise I used go.  Feel free to use a language of your choice,
+I used the following language,
 
 * [go](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/languages/go-cheat-sheet)
 
@@ -20,20 +20,25 @@ To deploy to `mesos/marathon` you will need,
 * [marathon](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/marathon-cheat-sheet)
 * [mesos](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/mesos-cheat-sheet)
 
-As a bonus, you can use Concourse CI to run the scripts,
+As a bonus, you can use Concourse CI,
 
 * [concourse](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/continuous-integration-continuous-deployment/concourse-cheat-sheet)
-  (Optional)
 
 ## RUN
 
-To run from the command line,
+The following steps are located in
+[run.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/run.sh).
+
+To run
+[main.go](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/main.go)
+from the command line,
 
 ```bash
+cd example-01
 go run main.go
 ```
 
-Every 2 seconds `hello-go-deploy-marathon` will print:
+Every 2 seconds it will print,
 
 ```bash
 Hello everyone, count is: 1
@@ -42,34 +47,294 @@ Hello everyone, count is: 3
 etc...
 ```
 
-## STEP 1 - TEST
+## CREATE BINARY
 
-Lets unit test the code,
+If you want, you can create a binary, but this will not be used since
+it is created during the docker image build.
+
+The following steps are located in
+[create-binary.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/bin/create-binary.sh).
 
 ```bash
-go test -cover ./... | tee /test/test_coverage.txt
+cd example-01
+go build -o bin/catch main.go
+cd bin
+./catch
 ```
 
-This script runs the above command
-[/test/unit-tests.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/master/test/unit-tests.sh).
+## CONCEPT
 
-This script runs the above command in concourse
-[/ci/scripts/unit-test.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/master/ci/scripts/unit-tests.sh).
+Think of a group of people on a playground playing
+the game catch.
+
+There is one ball being thrown around randomly from person to person.
+
+People can come and go as they please.
+
+If there is one person left, s/he will toss the ball to himself until
+another person joins the game.
+
+Any person that joins must be introduced to the entire group via a friend.
+
+If a person has the ball and leave the game, another person will
+pick it up and continue playing catch.
+
+## DOCKERHUB IMAGE
+
+Each "person" is an instance of the
+[catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
+DockerHub image.
+
+Each instance (i.e. people) has the following features:
+
+* Lightweight.
+* Knows who has and had the ball (via `whohasball` state).
+* Knows who is playing catch (via `friendslist` state).
+* Can 'catch' the ball from any other person, including himself.
+* Can 'throw' the ball to any other person, including himself.
+* Has a unique ID (URI).
+* Randomly picks which person to throw the ball to.
+
+## STATE TABLE
+
+Each person has the following State Table:
+
+* `friendslist` : List of all people playing, even himself (list of URIs)
+* `whohasball` : ???????? (his URI)
+
+## STARTING AND PLAYING THE GAME
+
+To deploy the first person (lets call him Steve):
+
+```bash
+docker run jeffdecola/catch-microservice StevesID
+```
+
+Because Steve is the first kid and all by himself, his State Table shall look like:
+
+* `friendslist` : StevesID
+* `whohasball` : StevesID
+
+Steve will play catch with himself until another person joins the game.
+
+To deploy another person (e.g. Julie), she must know another person
+(e.g. Steve):
+
+```bash
+docker run jeffdecola/catch-microservice larryID steveID
+```
+
+Hence, Julies's State Table shall look like.
+
+* `friendslist` : larryID, steveID
+* `whohasball` : unknown
+
+Steve will immediately throw the ball to julie.
+
+Steve will update Larry's State Table with the current states (`updatestate`).
+
+Steve will also introduce Larry to all the other kids
+via his `friendslist` if other kids are present (`updatestate`).
+
+When a kid catches the ball (`throw`) he tells everyone in his `friendslist`
+that he has the ball (`updatestate`).  Everyone will update their `whohasball`  state.
+
+## RETSful API using JSON
+
+To accomplish the above logic, a RESTful API with json shall be used.
+
+In gom, the http package lets us map request paths to functions.
+
+There are 4 basic commands:
+
+* caniplay
+* updatestate
+* throw
+* ihavetheball
+* kick
+
+### CANIPLAY - PUT /state
+
+When a new kid (Larry) wants to play, he must ask his friend (Steve)
+if he can play.
+
+PUT uri/state
+
+```json
+{
+    "cmd": "caniplay",
+    "uri": "larryURI"
+}
+```
+
+Reponse:
+
+```json
+{
+  "response": "success"
+}
+```
+
+If Larry does not get a response from Steve, then he can't play catch
+and will leave (i.e. exit).
+
+If success Steve will updates his `freindslist` and tells all of
+the other kids about Larry so they can update their respective `friendslist`.
+
+If Steve does not get a response while updating the other kids,
+he issues a kick command.
+
+Steve will also update Larry's State Table with his states.
+Now Larry is up to date and in the game.
+
+### UPDATESTATE - PUT /state
+
+When a kids wants ot update a friends state.
+
+PUT uri/state
+
+```json
+{
+    "cmd": "updatestate",
+    "friendslist": "URI",
+    "addtofriendslist": "URI",
+    "whohasball" : {"URI", "URI"}
+}
+```
+
+Reponse:
+
+```json
+{
+  "response": "success"
+}
+```
+
+### THROW BALL - PUT /state
+
+When a kid has the ball and wants to throw it, he randomwly picks someone from
+his `friendslist` and throws it via:
+
+PUT uri/state
+
+```json
+{
+    "cmd": "throw"
+}
+```
+
+Response:
+
+```json
+{
+  "response": "success"
+}
+```
+
+If he does not get a reposnse (fail), he first kicks the kid frmo the game and then
+throws the ball to another kid.
+
+If success, the thrower updates his `whohasball` state.  The catcher
+subsequently tells everyone in his `friendslist` who has the ball as follow:
+
+PUT uri/state
+
+```json
+{
+    "cmd": "ihaveball",
+    "uri": "catcherURI"
+}
+```
+
+Response:
+
+```json
+{
+  "response": "success"
+}
+```
+
+On success of updating all kids, the catchre is ready to throw the ball.
+
+If the catcher does not get a response (fail) from a kid, he kicks
+that kid from the game.
+
+### KICK FROM GAME- PUT /state
+
+When a kid does not respond, it is assumed he left the game.
+The kid who got the non-response tell all the other kids who it is so
+they can purge him from their state.
+
+PUT uri/state
+
+```json
+{
+    "cmd": "kick",
+    "uri": "kickURI"
+}
+```
+
+Response:
+
+```json
+{
+  "response": "success"
+}
+```
+
+### KID NOT RECEIVING ANY INFO - PUT /state
+
+If a kid left and came back, and does not receive any info,
+he assumes he's been kicked and starts to go through his friends
+list to ask if he can join the game as a new kid.
+
+## STEP 1 - TEST
+
+The following steps are located in
+[unit-tests.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/example-01/test/unit-tests.sh).
+
+To unit test the code,
+
+```bash
+cd example-01
+go test -cover ./... | tee test/test_coverage.txt
+cat test/test_coverage.txt
+```
+
+To create `_test` files,
+
+```bash
+gotests -w -all main.go
+```
 
 ## STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)
 
-We will be using a multi-stage build using a Dockerfile.
+The following steps are located in
+[build.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/build.sh).
+
+We will be using a multi-stage build using a
+[Dockerfile](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/Dockerfile).
 The end result will be a very small docker image around 13MB.
 
 ```bash
-docker build -f build-push/Dockerfile -t jeffdecola/hello-go-deploy-marathon .
+cd example-01
+docker build -f build-push/Dockerfile -t jeffdecola/catch-microservice .
 ```
 
-Obviously, replace `jeffdecola` with your DockerHub username.
+You can check and test this docker image,
+
+```bash
+docker images jeffdecola/catch-microservice:latest
+docker run --name catch-microservice -dit jeffdecola/catch-microservice
+docker exec -i -t catch-microservice /bin/bash
+docker logs catch-microservice
+```
+
+### Stage 1
 
 In stage 1, rather than copy a binary into a docker image (because
-that can cause issue), the Dockerfile will build the binary in the
-docker image.
+that can cause issue), **the Dockerfile will build the binary in the
+docker image.**
 
 If you open the DockerFile you can see it will get the dependencies and
 build the binary in go,
@@ -77,29 +342,19 @@ build the binary in go,
 ```bash
 FROM golang:alpine AS builder
 RUN go get -d -v
-RUN go build -o /go/bin/hello-go-deploy-marathon main.go
+RUN go build -o /go/bin/catch-microservice main.go
 ```
+
+### Stage 2
 
 In stage 2, the Dockerfile will copy the binary created in
 stage 1 and place into a smaller docker base image based
 on `alpine`, which is around 13MB.
 
-You can check and test your docker image,
-
-```bash
-docker run --name hello-go-deploy-marathon -dit jeffdecola/hello-go-deploy-marathon
-docker exec -i -t hello-go-deploy-marathon /bin/bash
-docker logs hello-go-deploy-marathon
-docker images jeffdecola/hello-go-deploy-marathon:latest
-```
-
-There is a `build-push.sh` script to build and push to DockerHub.
-There is also a script in the /ci folder to build and push
-in concourse.
-
 ## STEP 3 - PUSH (TO DOCKERHUB)
 
-Lets push your docker image to DockerHub.
+The following steps are located in
+[push.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/push.sh).
 
 If you are not logged in, you need to login to dockerhub,
 
@@ -107,39 +362,37 @@ If you are not logged in, you need to login to dockerhub,
 docker login
 ```
 
-Once logged in you can push,
+Once logged in you can push to DockerHub,
 
 ```bash
-docker push jeffdecola/hello-go-deploy-marathon
+docker push jeffdecola/catch-microservice
 ```
 
-Check you image at DockerHub. My image is located
-[https://hub.docker.com/r/jeffdecola/hello-go-deploy-marathon](https://hub.docker.com/r/jeffdecola/hello-go-deploy-marathon).
-
-This script runs the above commands
-[/build-push/build-push.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/master/build-push/build-push.sh).
-
-This script runs the above commands in concourse
-[/ci/scripts/build-push.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/master/ci/scripts/build-push.sh).
+Check the
+[catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
+docker image at DockerHub.
 
 ## STEP 4 - DEPLOY (TO MARATHON)
 
-Lets pull the `hello-go-deploy-marathon` docker image
+The following steps are located in
+[deploy.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/deploy-marathon/deploy.sh).
+
+Pull the `catch-microservice` docker image
 from DockerHub and deploy to mesos/marathon.
 
 This is actually very simple, you just PUT the
-[deploy-marathon/app.json](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/masterdeploy-marathon/app.json)
-file to mesos/marathon. This json file tells marathon what to do.
+[app.json](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/deploy-marathon/app.json)
+file to mesos/marathon. This .json file tells marathon what to do.
 
 ```bash
-curl -X PUT http://10.141.141.10:8080/v2/apps/hello-go-long-running \
+cd deploy-marathon
+curl -X PUT http://192.168.20.117:8080/v2/apps/catch-long-running \
 -d @app.json \
 -H "Content-type: application/json"
 ```
 
-This script runs the above commands
-[deploy-marathon/deploy.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/masterdeploy-marathon/deploy.sh).
+## CONTINUOUS INTEGRATION & DEPLOYMENT
 
-This script runs the above commands in concourse
-[/ci/scripts/deploy.sh](https://github.com/JeffDeCola/hello-go-deploy-marathon/tree/master/ci/scripts/deploy.sh).
-
+Refer to
+[ci-README.md](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)
+for how I automated the above process.
