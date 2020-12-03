@@ -14,23 +14,7 @@ _A cluster of lightweight docker images playing catch with a virtual ball._
 
 Table of Contents,
 
-* [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)
-* [RUN](https://github.com/JeffDeCola/catch-microservice#run)
-* [CONCEPT](https://github.com/JeffDeCola/catch-microservice#concept)
-* [DOCKERHUB IMAGE](https://github.com/JeffDeCola/catch-microservice#dockerhub-image)
-* [STATE TABLE](https://github.com/JeffDeCola/catch-microservice#state-table)
-* [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
-* [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
-  * [CANIPLAY - PUT /state](https://github.com/JeffDeCola/catch-microservice#caniplay---put-state)
-  * [UPDATESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updatestate---put-state)
-  * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
-  * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)
-  * [KID NOT RECEIVING ANY INFO - PUT /state](https://github.com/JeffDeCola/catch-microservice#kid-not-receiving-any-info---put-state)
-* [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
-* [STEP 2 - BUILD (DOCKER IMAGE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image)
-* [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
-* [STEP 4 - DEPLOY (TO MARATHON)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-marathon)
-* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
+* tbd
 
 Documentation and references,
 
@@ -44,7 +28,7 @@ _built with
 
 ## PREREQUISITES
 
-For this exercise I used go.  Feel free to use a language of your choice,
+I used the following language,
 
 * [go](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/languages/go-cheat-sheet)
 
@@ -56,25 +40,30 @@ To push a docker image you will need,
 
 * [DockerHub account](https://hub.docker.com/)
 
-To deploy to mesos/marathon you will need,
+To deploy to `mesos/marathon` you will need,
 
 * [marathon](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/marathon-cheat-sheet)
 * [mesos](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/mesos-cheat-sheet)
 
-As a bonus, you can use Concourse CI to run the scripts,
+As a bonus, you can use Concourse CI,
 
 * [concourse](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/continuous-integration-continuous-deployment/concourse-cheat-sheet)
-  (Optional)
 
 ## RUN
 
-To run from the command line,
+The following steps are located in
+[run.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/run.sh).
+
+To run
+[main.go](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/main.go)
+from the command line,
 
 ```bash
+cd example-01
 go run main.go
 ```
 
-Every 2 seconds `catch-microservice` will print:
+Every 2 seconds it will print,
 
 ```bash
 Hello everyone, count is: 1
@@ -82,6 +71,22 @@ Hello everyone, count is: 2
 Hello everyone, count is: 3
 etc...
 ```
+
+## CREATE BINARY
+
+If you want, you can create a binary, but this will not be used since
+it is created during the docker image build.
+
+The following steps are located in
+[create-binary.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/bin/create-binary.sh).
+
+```bash
+cd example-01
+go build -o bin/catch main.go
+cd bin
+./catch
+```
+
 ## CONCEPT
 
 Think of a group of people on a playground playing
@@ -310,69 +315,71 @@ list to ask if he can join the game as a new kid.
 
 ## STEP 1 - TEST
 
-Lets unit test the code,
+The following steps are located in
+[unit-tests.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/example-01/test/unit-tests.sh).
+
+To unit test the code,
 
 ```bash
-go test -cover ./... | tee /test/test_coverage.txt
+cd example-01
+go test -cover ./... | tee test/test_coverage.txt
+cat test/test_coverage.txt
 ```
 
-This script runs the above command
-[/test/unit-tests.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/test/unit-tests.sh).
-
-This script runs the above command in concourse
-[/ci/scripts/unit-test.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/unit-tests.sh).
-
-## STEP 2 - BUILD (DOCKER IMAGE)
-
-Lets build a docker image from your binary `/bin/hello-go`.
-
-First, create a binary `hello-go`,
-I keep my binaries in `/bin`.
+To create `_test` files,
 
 ```bash
-go build -o bin/hello-go main.go
+gotests -w -all main.go
 ```
 
-Copy the binary to `/build-push` because docker needs it in
-same directory as Dockerfile,
+## STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)
+
+The following steps are located in
+[build.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/build.sh).
+
+We will be using a multi-stage build using a
+[Dockerfile](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/Dockerfile).
+The end result will be a very small docker image around 13MB.
 
 ```bash
-cp bin/hello-go build-push/.
-cd build-push
+cd example-01
+docker build -f build-push/Dockerfile -t jeffdecola/catch-microservice .
 ```
 
-Build your docker image from binary `hello-go`
-using `Dockerfile`,
+You can check and test this docker image,
 
 ```bash
-docker build -t jeffdecola/catch-microservice .
+docker images jeffdecola/catch-microservice:latest
+docker run --name catch-microservice -dit jeffdecola/catch-microservice
+docker exec -i -t catch-microservice /bin/bash
+docker logs catch-microservice
 ```
 
-Obviously, replace `jeffdecola` with your DockerHub username.
+### Stage 1
 
-Check your docker images on your machine,
+In stage 1, rather than copy a binary into a docker image (because
+that can cause issue), **the Dockerfile will build the binary in the
+docker image.**
+
+If you open the DockerFile you can see it will get the dependencies and
+build the binary in go,
 
 ```bash
-docker images
+FROM golang:alpine AS builder
+RUN go get -d -v
+RUN go build -o /go/bin/catch-microservice main.go
 ```
 
-It will be listed as `jeffdecola/catch-microservice`
+### Stage 2
 
-You can test your dockerhub image,
-
-```bash
-docker run jeffdecola/catch-microservice
-```
-
-This script runs the above commands
-[/build-push/build-push.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/build-push/build-push.sh).
-
-This script runs the above commands in concourse
-[/ci/scripts/build-push.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/build-push.sh).
+In stage 2, the Dockerfile will copy the binary created in
+stage 1 and place into a smaller docker base image based
+on `alpine`, which is around 13MB.
 
 ## STEP 3 - PUSH (TO DOCKERHUB)
 
-Lets push your docker image to DockerHub.
+The following steps are located in
+[push.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/build-push/push.sh).
 
 If you are not logged in, you need to login to dockerhub,
 
@@ -380,41 +387,34 @@ If you are not logged in, you need to login to dockerhub,
 docker login
 ```
 
-Once logged in you can push,
+Once logged in you can push to DockerHub,
 
 ```bash
 docker push jeffdecola/catch-microservice
 ```
 
-Check you image at DockerHub. My image is located
-[https://hub.docker.com/r/jeffdecola/catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice).
-
-This script runs the above commands
-[/build-push/build-push.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/build-push/build-push.sh).
-
-This script runs the above commands in concourse
-[/ci/scripts/build-push.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/build-push.sh).
+Check the
+[catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
+docker image at DockerHub.
 
 ## STEP 4 - DEPLOY (TO MARATHON)
 
-Lets pull the `catch-microservice` docker image
+The following steps are located in
+[deploy.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/deploy-marathon/deploy.sh).
+
+Pull the `catch-microservice` docker image
 from DockerHub and deploy to mesos/marathon.
 
 This is actually very simple, you just PUT the
-[/deploy/app.json](https://github.com/JeffDeCola/catch-microservice/tree/master/deploy/app.json)
-file to mesos/marathon. This json file tells marathon what to do.
+[app.json](https://github.com/JeffDeCola/catch-microservice/blob/master/example-01/deploy-marathon/app.json)
+file to mesos/marathon. This .json file tells marathon what to do.
 
 ```bash
-curl -X PUT http://10.141.141.10:8080/v2/apps/hello-go-long-running \
+cd deploy-marathon
+curl -X PUT http://192.168.20.117:8080/v2/apps/catch-long-running \
 -d @app.json \
 -H "Content-type: application/json"
 ```
-
-This script runs the above commands
-[/deploy/deploy.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/deploy/deploy.sh).
-
-This script runs the above commands in concourse
-[/ci/scripts/deploy.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/ci/scripts/deploy.sh).
 
 ## CONTINUOUS INTEGRATION & DEPLOYMENT
 

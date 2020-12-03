@@ -1,5 +1,5 @@
 #!/bin/sh
-# catch-microservice deploy.sh
+# catch-microservice example-01 deploy.sh
 
 echo " "
 
@@ -17,7 +17,7 @@ else
 fi
 
 echo "Send app.json file to marathon"
-curl -X PUT http://192.168.20.117:8080/v2/apps/hello-go-long-running -d @app.json -H "Content-type: application/json"
+curl -X PUT http://192.168.20.117:8080/v2/apps/catch-long-running -d @app.json -H "Content-type: application/json"
 echo " "
 
 echo "deploy.sh (END)"

@@ -1,4 +1,4 @@
-// catch-microservice main.go
+// catch-microservice example-01 main.go
 
 package main
 
