@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# catch-microservice example-01 unit-tests.sh
+# catch-microservice unit-tests.sh
 
 echo " "
 
