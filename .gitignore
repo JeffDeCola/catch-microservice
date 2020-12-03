@@ -7,7 +7,7 @@ coverage.out
 # macOS
 .DS_Store
 
-# Ignore all binaries, but not build.sh
+# Ignore binaries
 **/bin/catch
 
 # Ignore test coverage
@@ -15,3 +15,6 @@ coverage.out
 
 # Ignore binary used for build
 **/build-push/catch
+
+# Ignore README for github pages
+**/docs/_includes/README.md
