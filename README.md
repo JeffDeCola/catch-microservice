@@ -14,7 +14,24 @@ _A cluster of lightweight docker images playing catch with a virtual ball._
 
 Table of Contents,
 
-* tbd
+* [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)
+* [RUN](https://github.com/JeffDeCola/catch-microservice#run)
+* [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)
+* [CONCEPT](https://github.com/JeffDeCola/catch-microservice#concept)
+* [DOCKERHUB IMAGE](https://github.com/JeffDeCola/catch-microservice#dockerhub-image)
+* [STATE TABLE](https://github.com/JeffDeCola/catch-microservice#state-table)
+* [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
+* [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
+  * [CANIPLAY - PUT /state](https://github.com/JeffDeCola/catch-microservice#caniplay---put-state)
+  * [UPDATESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updatestate---put-state)
+  * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
+  * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)
+  * [KID NOT RECEIVING ANY INFO - PUT /state](https://github.com/JeffDeCola/catch-microservice#kid-not-receiving-any-info---put-state)
+* [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
+* [STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image-via-dockerfile)
+* [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
+* [STEP 4 - DEPLOY (TO MARATHON)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-marathon)
+* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
 
 Documentation and references,
 
