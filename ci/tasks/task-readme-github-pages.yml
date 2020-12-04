@@ -1,4 +1,4 @@
-# catch-microservice task-readme-github-pages.yml
+# hello-go-deploy-marathon task-readme-github-pages.yml
 
 platform: linux
 
@@ -9,11 +9,11 @@ image_resource:
     tag: 1.15.3
 
 inputs:
-- name: catch-microservice
+- name: hello-go-deploy-marathon
 
 outputs:
-- name: catch-microservice-updated
+- name: hello-go-deploy-marathon-updated
 
 run:
-  path: ./catch-microservice/ci/scripts/readme-github-pages.sh
+  path: ./hello-go-deploy-marathon/ci/scripts/readme-github-pages.sh
   # args: [-debug]

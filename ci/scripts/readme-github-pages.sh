@@ -1,5 +1,5 @@
 #!/bin/sh
-# catch-microservice readme-github-pages.sh
+# hello-go-deploy-marathon readme-github-pages.sh
 
 echo " "
 
@@ -20,7 +20,7 @@ fi
 echo "GOAL ----------------------------------------------------------------------------------"
 echo " "
 
-echo "The goal is to git clone /catch-microservice to /catch-microservice-updated"
+echo "The goal is to git clone /hello-go-deploy-marathon to /hello-go-deploy-marathon-updated"
 echo "Then script will edit the /docs/_includes/README.md for GITHUB WEBPAGES"
 echo "Finally push the changes in /docs/_includes/README.md to github"
 echo " "
@@ -29,8 +29,8 @@ echo "CHECK THINGS -------------------------------------------------------------
 echo " "
 
 echo "At start, you should be in a /tmp/build/xxxxx directory with two folders:"
-echo "   /catch-microservice"
-echo "   /catch-microservice-updated (created in task-build-push.yml task file)"
+echo "   /hello-go-deploy-marathon"
+echo "   /hello-go-deploy-marathon-updated (created in task-build-push.yml task file)"
 echo " "
 
 echo "pwd is: $PWD"
@@ -43,12 +43,12 @@ echo " "
 echo "GIT CLONE -----------------------------------------------------------------------------"
 echo " "
 
-echo "git clone catch-microservice to catch-microservice-updated"
-git clone catch-microservice catch-microservice-updated
+echo "git clone hello-go-deploy-marathon to hello-go-deploy-marathon-updated"
+git clone hello-go-deploy-marathon hello-go-deploy-marathon-updated
 echo " "
 
-echo "cd catch-microservice-updated"
-cd catch-microservice-updated
+echo "cd hello-go-deploy-marathon-updated"
+cd hello-go-deploy-marathon-updated
 echo " "
 
 echo "List whats in the current directory"
@@ -70,8 +70,8 @@ echo "    sed -i 's#IMAGE](docs/#IMAGE](#g' temp-README.md"
 sed -i 's#IMAGE](docs/#IMAGE](#g' temp-README.md
 echo "    Update the image links for svgs (if you have them)"
 echo "    Add \"https://raw.githubusercontent.com/JeffDeCola/REPONAME/master/svgs/\" to \"svgs/\""
-echo "    sed -i 's/svgs\//https:\/\/raw.githubusercontent.com\/JeffDeCola\/catch-microservice\/master\/svgs\//g' temp-README.md"
-sed -i 's/svgs\//https:\/\/raw.githubusercontent.com\/JeffDeCola\/catch-microservice\/master\/svgs\//g' temp-README.md
+echo "    sed -i 's/svgs\//https:\/\/raw.githubusercontent.com\/JeffDeCola\/hello-go-deploy-marathon\/master\/svgs\//g' temp-README.md"
+sed -i 's/svgs\//https:\/\/raw.githubusercontent.com\/JeffDeCola\/hello-go-deploy-marathon\/master\/svgs\//g' temp-README.md
 echo " "
 
 echo "GIT COMMIT OR NOT ---------------------------------------------------------------------"

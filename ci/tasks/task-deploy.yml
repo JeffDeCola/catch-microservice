@@ -1,4 +1,4 @@
-# catch-microservice task-deploy.yml
+# hello-go-deploy-marathon task-deploy.yml
 
 platform: linux
 
@@ -9,8 +9,8 @@ image_resource:
     tag: 1.15.3
 
 inputs:
-- name: catch-microservice
+- name: hello-go-deploy-marathon
 
 run:
-  path: ./catch-microservice/ci/scripts/deploy.sh
+  path: ./hello-go-deploy-marathon/ci/scripts/deploy.sh
   # args: [-debug]
