@@ -8,10 +8,10 @@ coverage.out
 .DS_Store
 
 # Ignore binaries
-**/bin/hello-go
+**/bin/catch
 
 # Ignore test coverage
 **/test/test_coverage.txt
 
 # Ignore binary used for docker build
-**/build-push/hello-go
+**/build-push/catch
