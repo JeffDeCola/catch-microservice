@@ -1,4 +1,4 @@
-# catch-microservice task-unit-tests.yml
+# hello-go-deploy-marathon task-unit-tests.yml
 
 platform: linux
 
@@ -9,11 +9,11 @@ image_resource:
     tag: 1.15.3
 
 inputs:
-- name: catch-microservice
+- name: hello-go-deploy-marathon
 
 outputs:
 - name: coverage-results
 
 run:
-  path: ./catch-microservice/ci/scripts/unit-tests.sh
+  path: ./hello-go-deploy-marathon/ci/scripts/unit-tests.sh
   # args: [-debug]

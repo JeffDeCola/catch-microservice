@@ -1,88 +1,88 @@
-# catch-microservice pipeline.yml
+# hello-go-deploy-marathon pipeline.yml
 
 jobs:
 
 - name: job-readme-github-pages
   plan:
-  - get: catch-microservice
+  - get: hello-go-deploy-marathon
     trigger: true
   - put: resource-slack-alert
     params:
       channel: '#jeff-builds'
-      text: "From catch-microservice: STARTED job-readme-github-pages in concourse ci."
+      text: "From hello-go-deploy-marathon: STARTED job-readme-github-pages in concourse ci."
   - put: resource-repo-status
-    params: { state: "pending", description: "STARTED job-readme-github-pages in concourse ci.", commit: "catch-microservice" }
+    params: { state: "pending", description: "STARTED job-readme-github-pages in concourse ci.", commit: "hello-go-deploy-marathon" }
   - task: task-readme-github-pages
-    file: catch-microservice/ci/tasks/task-readme-github-pages.yml
+    file: hello-go-deploy-marathon/ci/tasks/task-readme-github-pages.yml
     on_success:
       do:
-      - put: catch-microservice
+      - put: hello-go-deploy-marathon
         params:
-          repository: catch-microservice-updated  
+          repository: hello-go-deploy-marathon-updated  
       - put: resource-slack-alert
         params:
           channel: '#jeff-builds'
-          text: "From catch-microservice: PASSED job-readme-github-pages in concourse ci."
+          text: "From hello-go-deploy-marathon: PASSED job-readme-github-pages in concourse ci."
       - put: resource-repo-status
-        params: { state: "success", description: "PASSED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
+        params: { state: "success", description: "PASSED job-readme-github-pages in concourse ci", commit: "hello-go-deploy-marathon" }
     on_failure:
       do:
       - put: resource-slack-alert
         params:
           channel: '#jeff-builds'
-          text: "From catch-microservice: FAILED job-readme-github-pages in concourse ci."
+          text: "From hello-go-deploy-marathon: FAILED job-readme-github-pages in concourse ci."
       - put: resource-repo-status
-        params: { state: "failure", description: "FAILED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
+        params: { state: "failure", description: "FAILED job-readme-github-pages in concourse ci", commit: "hello-go-deploy-marathon" }
 
 - name: job-unit-tests
   plan:
-  - get: catch-microservice
+  - get: hello-go-deploy-marathon
     trigger: true
     passed: [job-readme-github-pages]
   - put: resource-slack-alert
     params:
       channel: '#jeff-builds'
-      text: "From catch-microservice: STARTED job-unit-tests in concourse ci."
+      text: "From hello-go-deploy-marathon: STARTED job-unit-tests in concourse ci."
   - put: resource-repo-status
-    params: { state: "pending", description: "STARTED job-unit-tests in concourse ci.", commit: "catch-microservice" }
+    params: { state: "pending", description: "STARTED job-unit-tests in concourse ci.", commit: "hello-go-deploy-marathon" }
   - task: task-unit-tests
-    file: catch-microservice/ci/tasks/task-unit-tests.yml
+    file: hello-go-deploy-marathon/ci/tasks/task-unit-tests.yml
     on_success:
       do:
-      - put: catch-microservice
+      - put: hello-go-deploy-marathon
         params:
-          repository: catch-microservice  
+          repository: hello-go-deploy-marathon  
       - put: resource-slack-alert
         params:
           channel: '#jeff-builds'
           text_file: coverage-results/test_coverage.txt
           text: |
-            From catch-microservice: PASSED job-unit-tests in concourse ci. 
+            From hello-go-deploy-marathon: PASSED job-unit-tests in concourse ci. 
             $TEXT_FILE_CONTENT
       - put: resource-repo-status
-        params: { state: "success", description: "PASSED job-unit-tests in concourse ci", commit: "catch-microservice" }
+        params: { state: "success", description: "PASSED job-unit-tests in concourse ci", commit: "hello-go-deploy-marathon" }
     on_failure:
       do:
       - put: resource-slack-alert
         params:
           channel: '#jeff-builds'
-          text: "From catch-microservice: FAILED job-unit-tests in concourse ci."
+          text: "From hello-go-deploy-marathon: FAILED job-unit-tests in concourse ci."
       - put: resource-repo-status
-        params: { state: "failure", description: "FAILED job-unit-tests in concourse ci.", commit: "catch-microservice" }
+        params: { state: "failure", description: "FAILED job-unit-tests in concourse ci.", commit: "hello-go-deploy-marathon" }
 
 - name: job-build-push
   plan:
-    - get: catch-microservice
+    - get: hello-go-deploy-marathon
       trigger: true
       passed: [job-unit-tests]
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
-        text: "From catch-microservice: STARTED job-build-push in concourse ci."
+        text: "From hello-go-deploy-marathon: STARTED job-build-push in concourse ci."
     - put: resource-repo-status
-      params: { state: "pending", description: "STARTED job-build-push in concourse ci.", commit: "catch-microservice" }
+      params: { state: "pending", description: "STARTED job-build-push in concourse ci.", commit: "hello-go-deploy-marathon" }
     - task: task-build-push
-      file: catch-microservice/ci/tasks/task-build-push.yml
+      file: hello-go-deploy-marathon/ci/tasks/task-build-push.yml
     - put: resource-dump-to-dockerhub
       params: { build: "dist"}
       on_success:
@@ -90,49 +90,49 @@ jobs:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: PASSED job-build-push in concourse ci."
+            text: "From hello-go-deploy-marathon: PASSED job-build-push in concourse ci."
         - put: resource-repo-status
-          params: { state: "pending", description: "PASSED job-build-push in concourse ci.", commit: "catch-microservice" }
+          params: { state: "pending", description: "PASSED job-build-push in concourse ci.", commit: "hello-go-deploy-marathon" }
       on_failure:
         do:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: FAILED job-build-push in concourse ci."
+            text: "From hello-go-deploy-marathon: FAILED job-build-push in concourse ci."
         - put: resource-repo-status
-          params: { state: "failure", description: "FAILED job-build-push in concourse ci.", commit: "catch-microservice" }
+          params: { state: "failure", description: "FAILED job-build-push in concourse ci.", commit: "hello-go-deploy-marathon" }
 
 - name: job-deploy
   plan:
-    - get: catch-microservice
+    - get: hello-go-deploy-marathon
       trigger: true
       passed: [job-build-push]
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
-        text: "From catch-microservice: STARTED job-deploy in concourse ci."
+        text: "From hello-go-deploy-marathon: STARTED job-deploy in concourse ci."
     - put: resource-repo-status
-      params: { state: "pending", description: "STARTED job-deploy in concourse ci.", commit: "catch-microservice" }
+      params: { state: "pending", description: "STARTED job-deploy in concourse ci.", commit: "hello-go-deploy-marathon" }
     - task: task-deploy
-      file: catch-microservice/ci/tasks/task-deploy.yml
+      file: hello-go-deploy-marathon/ci/tasks/task-deploy.yml
     - put: resource-marathon
-      params: {app_json: "catch-microservice/code/deploy-marathon/app.json", time_out: 10}
+      params: {app_json: "hello-go-deploy-marathon/example-01/deploy-marathon/app.json", time_out: 10}
       on_success:
         do:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: PASSED job-deploy in concourse ci."
+            text: "From hello-go-deploy-marathon: PASSED job-deploy in concourse ci."
         - put: resource-repo-status
-          params: { state: "success", description: "PASSED job-deploy in concourse ci.", commit: "catch-microservice" }
+          params: { state: "success", description: "PASSED job-deploy in concourse ci.", commit: "hello-go-deploy-marathon" }
       on_failure:
         do:
         - put: resource-slack-alert
           params:
             channel: '#jeff-builds'
-            text: "From catch-microservice: FAILED job-deploy in concourse ci."
+            text: "From hello-go-deploy-marathon: FAILED job-deploy in concourse ci."
         - put: resource-repo-status
-          params: { state: "failure", description: "FAILED job-deploy in concourse ci.", commit: "catch-microservice" }
+          params: { state: "failure", description: "FAILED job-deploy in concourse ci.", commit: "hello-go-deploy-marathon" }
 
 resource_types:
 
@@ -154,17 +154,17 @@ resource_types:
 
 resources:
 
-- name: catch-microservice
+- name: hello-go-deploy-marathon
   type: git
   source:
-    #uri: https://github.com/jeffdecola/catch-microservice
-    uri: git@github.com:jeffdecola/catch-microservice.git
+    #uri: https://github.com/jeffdecola/hello-go-deploy-marathon
+    uri: git@github.com:jeffdecola/hello-go-deploy-marathon.git
     branch: master
     private_key: {{git_private_key}}
 - name: resource-dump-to-dockerhub
   type: docker-image
   source:
-    repository: jeffdecola/catch-microservice
+    repository: jeffdecola/hello-go-deploy-marathon
     tag: latest
     username: jeffdecola
     password: {{dockerhub_password}}
@@ -175,11 +175,11 @@ resources:
 - name: resource-repo-status 
   type: github-status
   source:
-    repository: jeffdecola/catch-microservice 
+    repository: jeffdecola/hello-go-deploy-marathon 
     access_token: {{repo_github_token}}
 - name: resource-marathon
   type: marathon-deploy
   source:
-    app_id: catch-microservice-long-run
+    app_id: hello-go-deploy-marathon-long-run
     uri: http://192.168.20.117:8080
     

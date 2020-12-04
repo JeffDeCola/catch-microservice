@@ -1,4 +1,4 @@
 #!/bin/bash
-# catch-microservice set-pipeline.sh
+# hello-go-deploy-marathon set-pipeline.sh
 
-fly -t ci set-pipeline -p catch-microservice -c pipeline.yml --load-vars-from ../../../../../.credentials.yml
+fly -t ci set-pipeline -p hello-go-deploy-marathon -c pipeline.yml --load-vars-from ../../../../../.credentials.yml
