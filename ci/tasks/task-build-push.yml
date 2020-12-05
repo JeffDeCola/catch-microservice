@@ -1,0 +1,20 @@
+# catch-microservice task-build-push.yml
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: golang
+    tag: 1.15.3
+
+inputs:
+- name: catch-microservice
+
+outputs:
+- name: dist
+
+run:
+
+  path: ./catch-microservice/ci/scripts/build-push.sh
+  # args: [-debug]
