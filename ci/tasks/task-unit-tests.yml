@@ -1,0 +1,19 @@
+# catch-microservice task-unit-tests.yml
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: golang
+    tag: 1.15.3
+
+inputs:
+- name: catch-microservice
+
+outputs:
+- name: coverage-results
+
+run:
+  path: ./catch-microservice/ci/scripts/unit-tests.sh
+  # args: [-debug]
