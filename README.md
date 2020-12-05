@@ -14,10 +14,10 @@ _A cluster of lightweight docker images playing catch with a virtual ball._
 
 Table of Contents,
 
+* [OVERVIEW](https://github.com/JeffDeCola/catch-microservice#overview)
 * [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)
 * [RUN](https://github.com/JeffDeCola/catch-microservice#run)
 * [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)
-* [CONCEPT](https://github.com/JeffDeCola/catch-microservice#concept)
 * [DOCKERHUB IMAGE](https://github.com/JeffDeCola/catch-microservice#dockerhub-image)
 * [STATE TABLE](https://github.com/JeffDeCola/catch-microservice#state-table)
 * [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
@@ -27,7 +27,7 @@ Table of Contents,
   * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
   * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)
   * [KID NOT RECEIVING ANY INFO - PUT /state](https://github.com/JeffDeCola/catch-microservice#kid-not-receiving-any-info---put-state)
-* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
+* [TEST, BUILD, PUSH & DEPLOY](https://github.com/JeffDeCola/catch-microservice#test-build-push--deploy)
   * [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
   * [STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image-via-dockerfile)
   * [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
@@ -43,11 +43,34 @@ Documentation and references,
 _built with
 [concourse ci](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)_
 
+## OVERVIEW
+
+Think of a group of people on a playground playing
+the game catch.
+
+There is one ball being thrown around randomly from person to person.
+
+People can come and go as they please.
+
+If there is one person left, s/he will toss the ball to himself until
+another person joins the game.
+
+Any person that joins must be introduced to the entire group via a friend.
+
+If a person has the ball and leave the game, another person will
+pick it up and continue playing catch.
+
 ## PREREQUISITES
 
 I used the following language,
 
 * [go](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/languages/go-cheat-sheet)
+
+You will need the following go packages,
+
+```bash
+go get -u -v github.com/sirupsen/logrus
+```
 
 To build a docker image you will need docker on your machine,
 
@@ -80,19 +103,17 @@ cd code
 go run main.go
 ```
 
-Every 2 seconds it will print,
+As a placeholder, every 2 seconds it will print,
 
-```bash
-Hello everyone, count is: 1
-Hello everyone, count is: 2
-Hello everyone, count is: 3
-etc...
+```txt
+    INFO[0000] Let's Start this!
+    Hello everyone, count is: 1
+    Hello everyone, count is: 2
+    Hello everyone, count is: 3
+    etc...
 ```
 
 ## CREATE BINARY
-
-If you want, you can create a binary, but this will not be used since
-it is created during the docker image build.
 
 The following steps are located in
 [create-binary.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/bin/create-binary.sh).
@@ -104,22 +125,8 @@ cd bin
 ./catch
 ```
 
-## CONCEPT
-
-Think of a group of people on a playground playing
-the game catch.
-
-There is one ball being thrown around randomly from person to person.
-
-People can come and go as they please.
-
-If there is one person left, s/he will toss the ball to himself until
-another person joins the game.
-
-Any person that joins must be introduced to the entire group via a friend.
-
-If a person has the ball and leave the game, another person will
-pick it up and continue playing catch.
+This binary will not be used during a docker build
+since it creates it's own.
 
 ## DOCKERHUB IMAGE
 
@@ -330,7 +337,7 @@ If a kid left and came back, and does not receive any info,
 he assumes he's been kicked and starts to go through his friends
 list to ask if he can join the game as a new kid.
 
-## CONTINUOUS INTEGRATION & DEPLOYMENT
+## TEST, BUILD, PUSH & DEPLOY
 
 Refer to
 [ci-README.md](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)
