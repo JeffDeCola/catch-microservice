@@ -35,9 +35,9 @@ Table of Contents,
 
 Documentation and references,
 
-* The `catch-microservice`
-  [Docker Image](https://hub.docker.com/r/jeffdecola/catch-microservice)
-  on DockerHub
+* The
+  [catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
+  docker image on DockerHub
 
 [GitHub Webpage](https://jeffdecola.github.io/catch-microservice/)
 _built with
