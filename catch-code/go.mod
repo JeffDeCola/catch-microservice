@@ -1,4 +1,4 @@
-module code
+module catch-code
 
 go 1.19
 
