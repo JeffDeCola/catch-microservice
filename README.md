@@ -1,4 +1,4 @@
-# catch-microservice
+# CATCH MICROSERVICE
 
 ```text
 *** THE REPO IS UNDER CONSTRUCTION - CHECK BACK SOON ***
@@ -15,9 +15,9 @@ _A cluster of lightweight docker images playing catch with a virtual ball._
 Table of Contents,
 
 * [OVERVIEW](https://github.com/JeffDeCola/catch-microservice#overview)
-* [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)    
+* [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)
 * [RUN](https://github.com/JeffDeCola/catch-microservice#run)
-* [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)    
+* [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)
 * [DOCKERHUB IMAGE](https://github.com/JeffDeCola/catch-microservice#dockerhub-image)
 * [STATE TABLE](https://github.com/JeffDeCola/catch-microservice#state-table)
 * [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
