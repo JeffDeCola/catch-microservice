@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# catch-microservice code build.sh
+# catch-microservice build.sh
 
 echo " "
 
@@ -8,7 +8,8 @@ then
     echo "************************************************************************"
     echo "* build.sh -debug (START) **********************************************"
     echo "************************************************************************"
-    # set -x enables a mode of the shell where all executed commands are printed to the terminal.
+    # set -x enables a mode of the shell where all executed commands
+    # are printed to the terminal.
     set -x
     echo " "
 else
@@ -21,11 +22,12 @@ fi
 echo "cd to where go code is"
 echo "cd .."
 cd ..
+echo " " 
 
 echo "Build your docker image using Dockerfile"
 echo "NOTE: The binary is built using this step"
-echo "docker build -f build-push/Dockerfile -t jeffdecola/catch-microservice ."
-docker build -f build-push/Dockerfile -t jeffdecola/catch-microservice .
+echo "docker build -f build/Dockerfile -t jeffdecola/catch-microservice ."
+docker build -f build/Dockerfile -t jeffdecola/catch-microservice .
 echo " "
 
 echo "Check Docker Image size"

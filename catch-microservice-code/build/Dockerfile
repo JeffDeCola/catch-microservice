@@ -1,4 +1,4 @@
-# catch-microservice code Dockerfile used to build docker image
+# catch-microservice Dockerfile used to build docker image
 
 # Multi-stage build to create a small docker image
 

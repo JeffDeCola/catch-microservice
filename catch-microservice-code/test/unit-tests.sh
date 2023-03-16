@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# catch-microservice code unit-tests.sh
+# catch-microservice unit-tests.sh
 
 echo " "
 
@@ -8,7 +8,8 @@ then
     echo "************************************************************************"
     echo "* unit-tests.sh -debug (START) *****************************************"
     echo "************************************************************************"
-    # set -x enables a mode of the shell where all executed commands are printed to the terminal.
+    # set -x enables a mode of the shell where all executed commands
+    # are printed to the terminal.
     set -x
     echo " "
 else

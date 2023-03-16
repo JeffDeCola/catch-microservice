@@ -1,134 +1,99 @@
 # CATCH MICROSERVICE
 
+[![Tag Latest](https://img.shields.io/github/v/tag/jeffdecola/catch-microservice)](https://github.com/JeffDeCola/catch-microservice/tags)
+[![Go Reference](https://pkg.go.dev/badge/github.com/JeffDeCola/catch-microservice.svg)](https://pkg.go.dev/github.com/JeffDeCola/catch-microservice)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JeffDeCola/catch-microservice)](https://goreportcard.com/report/github.com/JeffDeCola/catch-microservice)
+[![codeclimate Maintainability](https://api.codeclimate.com/v1/badges/3bbad863dff19a54d032/maintainability)](https://codeclimate.com/github/JeffDeCola/catch-microservice/maintainability)
+[![codeclimate Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
+[![Docker Pulls](https://badgen.net/docker/pulls/jeffdecola/catch-microservice?icon=docker&label=pulls)](https://hub.docker.com/r/jeffdecola/catch-microservice/)
+[![MIT License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
+[![jeffdecola.com](https://img.shields.io/badge/website-jeffdecola.com-blue)](https://jeffdecola.com)
+
 ```text
 *** THE REPO IS UNDER CONSTRUCTION - CHECK BACK SOON ***
 ```
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/JeffDeCola/catch-microservice)](https://goreportcard.com/report/github.com/JeffDeCola/catch-microservice)
-[![GoDoc](https://godoc.org/github.com/JeffDeCola/catch-microservice?status.svg)](https://godoc.org/github.com/JeffDeCola/catch-microservice)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3bbad863dff19a54d032/maintainability)](https://codeclimate.com/github/JeffDeCola/catch-microservice/maintainability)
-[![Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
-
 _A cluster of lightweight docker images playing catch with a virtual ball._
 
-Table of Contents,
+Table of Contents
 
 * [OVERVIEW](https://github.com/JeffDeCola/catch-microservice#overview)
 * [PREREQUISITES](https://github.com/JeffDeCola/catch-microservice#prerequisites)
-* [RUN](https://github.com/JeffDeCola/catch-microservice#run)
-* [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)
-* [DOCKERHUB IMAGE](https://github.com/JeffDeCola/catch-microservice#dockerhub-image)
-* [STATE TABLE](https://github.com/JeffDeCola/catch-microservice#state-table)
-* [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
-* [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
+* [SOFTWARE STACK](https://github.com/JeffDeCola/catch-microservice#software-stack)
+* [HOW IT WORKS](https://github.com/JeffDeCola/catch-microservice#how-it-works)
+  * [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
+  * [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
   * [CANIPLAY - PUT /state](https://github.com/JeffDeCola/catch-microservice#caniplay---put-state)
   * [UPDATESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updatestate---put-state)
   * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
   * [KICK FROM GAME- PUT /state](https://github.com/JeffDeCola/catch-microservice#kick-from-game--put-state)
   * [KID NOT RECEIVING ANY INFO - PUT /state](https://github.com/JeffDeCola/catch-microservice#kid-not-receiving-any-info---put-state)
-* [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
-* [STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image-via-dockerfile)
-* [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
-* [STEP 4 - DEPLOY (TO MARATHON)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-marathon)
-* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
+* [CREATE THE DOCKER IMAGE](https://github.com/JeffDeCola/catch-microservice#create-the-docker-image)
+  * [RUN](https://github.com/JeffDeCola/catch-microservice#run)
+  * [CREATE BINARY](https://github.com/JeffDeCola/catch-microservice#create-binary)
+  * [STEP 1 - TEST](https://github.com/JeffDeCola/catch-microservice#step-1---test)
+  * [STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image-via-dockerfile)
+  * [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
+  * [STEP 4 - DEPLOY (TO DOCKER)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-docker)
+  * [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
 
-Documentation and references,
+Documentation and Reference
 
+* [Microservices cheat sheet](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/software-architectures/microservices/microservices-cheat-sheet)
 * The
-  [catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
-  docker image on DockerHub
-
-[GitHub Webpage](https://jeffdecola.github.io/catch-microservice/)
-_built with
-[concourse ci](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)_
+  [catch-microservice docker image](https://hub.docker.com/r/jeffdecola/catch-microservice)
+  on DockerHub
+* This repos
+  [github webpage](https://jeffdecola.github.io/catch-microservice/)
+  _built with
+  [concourse](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)_
 
 ## OVERVIEW
 
 Think of a group of people on a playground playing
-the game catch.
-
-There is one ball being thrown around randomly from person to person.
-
+the game catch. There is one ball being thrown around randomly from person to person.
 People can come and go as they please.
-
-If there is one person left, s/he will toss the ball to himself until
+If there is one person left, they will toss the ball to themselves until
 another person joins the game.
 
 Any person that joins must be introduced to the entire group via a friend.
-
 If a person has the ball and leave the game, another person will
 pick it up and continue playing catch.
 
 ## PREREQUISITES
 
-I used the following language,
-
-* [go](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/languages/go-cheat-sheet)
-
 You will need the following go packages,
 
 ```bash
 go get -u -v github.com/sirupsen/logrus
+go get -u -v github.com/cweill/gotests/...
 ```
 
-To build a docker image you will need docker on your machine,
+## SOFTWARE STACK
 
-* [docker](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/builds-deployment-containers/docker-cheat-sheet)
+* DEVELOPMENT
+  * [go](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/languages/go-cheat-sheet)
+  * gotests
+* OPERATIONS
+  * [concourse/fly](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations/continuous-integration-continuous-deployment/concourse-cheat-sheet)
+    (optional)
+  * [docker](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations/orchestration/builds-deployment-containers/docker-cheat-sheet)
+* SERVICES
+  * [dockerhub](https://hub.docker.com/)
+  * [github](https://github.com/)
 
-To push a docker image you will need,
+Where,
 
-* [DockerHub account](https://hub.docker.com/)
+* **GUI**
+  _golang net/http package and ReactJS_
+* **Routing & REST API framework**
+  _golang gorilla/mux package_
+* **Backend**
+  _golang_
+* **Database**
+  _N/A_
 
-To deploy to `mesos/marathon` you will need,
-
-* [marathon](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/marathon-cheat-sheet)
-* [mesos](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/orchestration/cluster-managers-resource-management-scheduling/mesos-cheat-sheet)
-
-As a bonus, you can use Concourse CI,
-
-* [concourse](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/operations-tools/continuous-integration-continuous-deployment/concourse-cheat-sheet)
-
-## RUN
-
-The following steps are located in
-[run.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/run.sh).
-
-To run
-[main.go](https://github.com/JeffDeCola/catch-microservice/blob/master/code/main.go)
-from the command line,
-
-```bash
-cd code
-go run main.go
-```
-
-As a placeholder, every 2 seconds it will print,
-
-```txt
-    INFO[0000] Let's Start this!
-    Hello everyone, count is: 1
-    Hello everyone, count is: 2
-    Hello everyone, count is: 3
-    etc...
-```
-
-## CREATE BINARY
-
-The following steps are located in
-[create-binary.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/bin/create-binary.sh).
-
-```bash
-cd code
-go build -o bin/catch main.go
-cd bin
-./catch
-```
-
-This binary will not be used during a docker build
-since it creates it's own.
-
-## DOCKERHUB IMAGE
+## HOW IT WORKS
 
 Each "person" is an instance of the
 [catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
@@ -144,14 +109,12 @@ Each instance (i.e. people) has the following features:
 * Has a unique ID (URI).
 * Randomly picks which person to throw the ball to.
 
-## STATE TABLE
-
 Each person has the following State Table:
 
 * `friendslist` : List of all people playing, even himself (list of URIs)
 * `whohasball` : ???????? (his URI)
 
-## STARTING AND PLAYING THE GAME
+### STARTING AND PLAYING THE GAME
 
 To deploy the first person (lets call him Steve):
 
@@ -188,7 +151,7 @@ via his `friendslist` if other kids are present (`updatestate`).
 When a kid catches the ball (`throw`) he tells everyone in his `friendslist`
 that he has the ball (`updatestate`).  Everyone will update their `whohasball`  state.
 
-## RETSful API using JSON
+### RETSful API using JSON
 
 To accomplish the above logic, a RESTful API with json shall be used.
 
@@ -337,37 +300,71 @@ If a kid left and came back, and does not receive any info,
 he assumes he's been kicked and starts to go through his friends
 list to ask if he can join the game as a new kid.
 
-## STEP 1 - TEST
+## CREATE THE DOCKER IMAGE
 
-The following steps are located in
-[unit-tests.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/code/test/unit-tests.sh).
+How I created, tested, and deployed the docker image.
 
-To unit test the code,
+### RUN
+
+To
+[run.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/run.sh),
 
 ```bash
-cd code
+cd catch-microservice-code
+go run main.go
+```
+
+As a placeholder, every 2 seconds it will print,
+
+```txt
+    INFO[0000] Let's Start this!
+    Hello everyone, count is: 1
+    Hello everyone, count is: 2
+    Hello everyone, count is: 3
+    etc...
+```
+
+### CREATE BINARY
+
+To
+[create-binary.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/bin/create-binary.sh),
+
+```bash
+cd catch-microservice-code/bin
+go build -o catch-microservice ../main.go
+./catch-microservice
+```
+
+This binary will not be used during a docker build
+since it creates it's own.
+
+### STEP 1 - TEST
+
+To create unit `_test` files,
+
+```bash
+cd catch-microservice-code
+gotests -w -all main.go
+```
+
+To run
+[unit-tests.sh](https://github.com/JeffDeCola/catch-microservice/tree/master/catch-microservice-code/test/unit-tests.sh),
+
+```bash
 go test -cover ./... | tee test/test_coverage.txt
 cat test/test_coverage.txt
 ```
 
-To create `_test` files,
+### STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)
+
+To
+[build.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/build/build.sh)
+with a
+[Dockerfile](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/build/Dockerfile),
 
 ```bash
-gotests -w -all main.go
-```
-
-## STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)
-
-The following steps are located in
-[build.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/build-push/build.sh).
-
-We will be using a multi-stage build using a
-[Dockerfile](https://github.com/JeffDeCola/catch-microservice/blob/master/code/build-push/Dockerfile).
-The end result will be a very small docker image around 13MB.
-
-```bash
-cd code
-docker build -f build-push/Dockerfile -t jeffdecola/catch-microservice .
+cd catch-microservice-code
+docker build -f build/Dockerfile -t jeffdecola/catch-microservice .
 ```
 
 You can check and test this docker image,
@@ -377,14 +374,12 @@ docker images jeffdecola/catch-microservice:latest
 docker run --name catch-microservice -dit jeffdecola/catch-microservice
 docker exec -i -t catch-microservice /bin/bash
 docker logs catch-microservice
+docker rm -f catch-microservice
 ```
 
 In **stage 1**, rather than copy a binary into a docker image (because
-that can cause issues), **the Dockerfile will build the binary in the
-docker image.**
-
-If you open the DockerFile you can see it will get the dependencies and
-build the binary in go,
+that can cause issues), the Dockerfile will build the binary in the
+docker image,
 
 ```bash
 FROM golang:alpine AS builder
@@ -396,47 +391,39 @@ In **stage 2**, the Dockerfile will copy the binary created in
 stage 1 and place into a smaller docker base image based
 on `alpine`, which is around 13MB.
 
-## STEP 3 - PUSH (TO DOCKERHUB)
+### STEP 3 - PUSH (TO DOCKERHUB)
 
-The following steps are located in
-[push.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/build-push/push.sh).
-
-If you are not logged in, you need to login to dockerhub,
+You must be logged in to DockerHub,
 
 ```bash
 docker login
 ```
 
-Once logged in you can push to DockerHub,
+To
+[push.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/push/push.sh),
 
 ```bash
 docker push jeffdecola/catch-microservice
 ```
 
 Check the
-[catch-microservice](https://hub.docker.com/r/jeffdecola/catch-microservice)
-docker image at DockerHub.
+[catch-microservice docker image](https://hub.docker.com/r/jeffdecola/catch-microservice)
+at DockerHub.
 
-## STEP 4 - DEPLOY (TO MARATHON)
+### STEP 4 - DEPLOY (TO DOCKER)
 
-The following steps are located in
-[deploy.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/code/deploy-marathon/deploy.sh).
-
-Pull the `catch-microservice` docker image
-from DockerHub and deploy to mesos/marathon.
-
-This is actually very simple, you just PUT the
-[app.json](https://github.com/JeffDeCola/catch-microservice/blob/master/code/deploy-marathon/app.json)
-file to mesos/marathon. This .json file tells marathon what to do.
+To
+[deploy.sh](https://github.com/JeffDeCola/catch-microservice/blob/master/catch-microservice-code/deploy/deploy.sh),
 
 ```bash
-cd deploy-marathon
-curl -X PUT http://192.168.20.117:8080/v2/apps/catch-long-running \
--d @app.json \
--H "Content-type: application/json"
+cd catch-microservice-code
+docker run --name catch-microservice -dit jeffdecola/catch-microservice
+docker exec -i -t catch-microservice /bin/bash
+docker logs catch-microservice
+docker rm -f catch-microservice
 ```
 
-## CONTINUOUS INTEGRATION & DEPLOYMENT
+### CONTINUOUS INTEGRATION & DEPLOYMENT
 
 Refer to
 [ci-README.md](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)

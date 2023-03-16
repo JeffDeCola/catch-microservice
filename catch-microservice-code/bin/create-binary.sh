@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# catch-microservice code create-binary.sh
+# crypto-miner-manger create-binary.sh
 
 echo " "
 
@@ -8,7 +8,8 @@ then
     echo "************************************************************************"
     echo "* create-binary.sh -debug (START) **************************************"
     echo "************************************************************************"
-    # set -x enables a mode of the shell where all executed commands are printed to the terminal.
+    # set -x enables a mode of the shell where all executed commands
+    # are printed to the terminal.
     set -x
     echo " "
 else
@@ -18,9 +19,9 @@ else
     echo " "
 fi
 
-echo "Create a binary catch in /bin"
-echo "    Kick off executable with ./catch"
-go build -o catch ../main.go
+echo "Create a binary crypto-miner in /bin"
+echo "    Kick off executable with ./catch-microservice"
+go build -o catch-microservice ../main.go
 echo " "
 
 echo "************************************************************************"
