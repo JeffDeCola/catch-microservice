@@ -11,10 +11,10 @@ coverage.out
 *.jpg:Zone.Identifier
 
 # Ignore binaries
-**/bin/hello-go
+**/bin/catch-microservice
 
 # Ignore test coverage
 **/test/test_coverage.txt
 
 # Ignore binary used for docker build
-**/build-push/hello-go
+**/build/catch-microservice
