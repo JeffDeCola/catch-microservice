@@ -56,8 +56,8 @@ echo "cp -R ./catch-microservice src/github.com/JeffDeCola/."
 cp -R ./catch-microservice src/github.com/JeffDeCola/.
 echo " "
 
-echo "cd src/github.com/JeffDeCola/catch-microservice/code"
-cd src/github.com/JeffDeCola/catch-microservice/code
+echo "cd src/github.com/JeffDeCola/catch-microservice/catch-microservice-code"
+cd src/github.com/JeffDeCola/catch-microservice/catch-microservice-code
 echo " "
 
 echo "Check that you are set and everything is in the right place for go:"

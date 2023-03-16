@@ -42,13 +42,13 @@ echo "SETUP THE BUILD IN /dist -------------------------------------------------
 echo " "
 
 echo "Copy what you want to make binary of (i.e. go build) into dist"
-echo "cp -r catch-microservice/code/* dist"
-cp -r catch-microservice/code/* dist
+echo "cp -r catch-microservice/catch-microservice-code/* dist"
+cp -r catch-microservice/catch-microservice-code/* dist
 echo " "
 
 echo "Copy the Dockefile into dist"
-echo "cp dist/build-push/Dockerfile dist"
-cp dist/build-push/Dockerfile dist
+echo "cp dist/build/Dockerfile dist"
+cp dist/build/Dockerfile dist
 
 echo "List whats in /dist"
 cd dist
@@ -65,8 +65,8 @@ echo " "
 #cp -R ./catch-microservice src/github.com/JeffDeCola/.
 #echo " "
 
-#echo "cd src/github.com/JeffDeCola/catch-microservice/code"
-#cd src/github.com/JeffDeCola/catch-microservice/code
+#echo "cd src/github.com/JeffDeCola/catch-microservice/catch-microservice-code"
+#cd src/github.com/JeffDeCola/catch-microservice/catch-microservice-code
 #echo " "
 
 #echo "Check that you are set and everything is in the right place for go:"
@@ -74,8 +74,8 @@ echo " "
 #echo "pwd is: $PWD"
 #ls -la
 
-#echo "Create a binary catch in /bin"
-#go build -o bin/catch main.go
+#echo "Create a binary hello-go in /bin"
+#go build -o bin/hello-go main.go
 #echo ""
 
 #echo "cd to the /dist directory"
@@ -83,15 +83,15 @@ echo " "
 #echo " "
 
 #echo "cp the binary into /dist"
-#cp "$GOPATH/src/github.com/JeffDeCola/catch-microservice/code/bin/catch" .
+#cp "$GOPATH/src/github.com/JeffDeCola/catch-microservice/catch-microservice-code/bin/hello-go" .
 #echo " "
 
 #echo "cp the Dockerfile into /dist"
-#cp "$GOPATH/src/github.com/JeffDeCola/catch-microservice/code/build-push/Dockerfile" .
+#cp "$GOPATH/src/github.com/JeffDeCola/catch-microservice/catch-microservice-code/build-push/Dockerfile" .
 #echo " "
 
 #echo "Make it executable by all - chmod +x"
-#chmod +x catch
+#chmod +x hello-go
 #echo " "
 
 #echo "List whats in the /dist directory"

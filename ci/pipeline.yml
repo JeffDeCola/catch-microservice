@@ -1,185 +1,256 @@
 # catch-microservice pipeline.yml
 
+#------------------------------------------------------------------------------------------
 jobs:
 
+#**********************************************
 - name: job-readme-github-pages
+#**********************************************
   plan:
-  - get: catch-microservice
-    trigger: true
-  - put: resource-slack-alert
-    params:
-      channel: '#jeff-builds'
-      text: "From catch-microservice: STARTED job-readme-github-pages in concourse ci."
-  - put: resource-repo-status
-    params: { state: "pending", description: "STARTED job-readme-github-pages in concourse ci.", commit: "catch-microservice" }
-  - task: task-readme-github-pages
-    file: catch-microservice/ci/tasks/task-readme-github-pages.yml
-    on_success:
-      do:
-      - put: catch-microservice
-        params:
-          repository: catch-microservice-updated  
-      - put: resource-slack-alert
-        params:
-          channel: '#jeff-builds'
-          text: "From catch-microservice: PASSED job-readme-github-pages in concourse ci."
-      - put: resource-repo-status
-        params: { state: "success", description: "PASSED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
-    on_failure:
-      do:
-      - put: resource-slack-alert
-        params:
-          channel: '#jeff-builds'
-          text: "From catch-microservice: FAILED job-readme-github-pages in concourse ci."
-      - put: resource-repo-status
-        params: { state: "failure", description: "FAILED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
 
+    # GET REPO FROM GITHUB
+    - get: catch-microservice
+      trigger: true
+    # SEND SLACK ALERT  
+    - put: resource-slack-alert
+      params:
+        channel: '#jeff-builds'
+        text: "From catch-microservice: STARTED job-readme-github-pages in concourse ci."
+    # SEND GITHUB STATUS
+    - put: resource-repo-status
+      params: { state: "pending", description: "STARTED job-readme-github-pages in concourse ci.", commit: "catch-microservice" }    
+    
+    # RUN TASK IN REPO USING ALPINE DOCKER IMAGE
+    - task: task-readme-github-pages
+      file: catch-microservice/ci/tasks/task-readme-github-pages.yml
+      
+      # TASK SUCCESS
+      on_success:
+        do:
+          # PUSH NEW REPO TO GITHUB
+          - put: catch-microservice
+            params:
+              repository: catch-microservice-updated  
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: PASSED job-readme-github-pages in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "success", description: "PASSED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
+      
+      # TASK FAILURE   
+      on_failure:
+        do:
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: FAILED job-readme-github-pages in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "failure", description: "FAILED job-readme-github-pages in concourse ci", commit: "catch-microservice" }
+
+#**********************************************
 - name: job-unit-tests
+#**********************************************
   plan:
-  - get: catch-microservice
-    trigger: true
-    passed: [job-readme-github-pages]
-  - put: resource-slack-alert
-    params:
-      channel: '#jeff-builds'
-      text: "From catch-microservice: STARTED job-unit-tests in concourse ci."
-  - put: resource-repo-status
-    params: { state: "pending", description: "STARTED job-unit-tests in concourse ci.", commit: "catch-microservice" }
-  - task: task-unit-tests
-    file: catch-microservice/ci/tasks/task-unit-tests.yml
-    on_success:
-      do:
-      - put: catch-microservice
-        params:
-          repository: catch-microservice  
-      - put: resource-slack-alert
-        params:
-          channel: '#jeff-builds'
-          text_file: coverage-results/test_coverage.txt
-          text: |
-            From catch-microservice: PASSED job-unit-tests in concourse ci. 
-            $TEXT_FILE_CONTENT
-      - put: resource-repo-status
-        params: { state: "success", description: "PASSED job-unit-tests in concourse ci", commit: "catch-microservice" }
-    on_failure:
-      do:
-      - put: resource-slack-alert
-        params:
-          channel: '#jeff-builds'
-          text: "From catch-microservice: FAILED job-unit-tests in concourse ci."
-      - put: resource-repo-status
-        params: { state: "failure", description: "FAILED job-unit-tests in concourse ci.", commit: "catch-microservice" }
 
+    # GET REPO FROM GITHUB
+    - get: catch-microservice
+      trigger: true
+      passed: [job-readme-github-pages]
+    # SEND SLACK ALERT  
+    - put: resource-slack-alert
+      params:
+        channel: '#jeff-builds'
+        text: "From catch-microservice: STARTED job-unit-tests in concourse ci."
+    # SEND GITHUB STATUS
+    - put: resource-repo-status
+      params: { state: "pending", description: "STARTED job-unit-tests in concourse ci.", commit: "catch-microservice" }
+
+    # RUN TASK IN REPO USING ALPINE DOCKER IMAGE 
+    - task: task-unit-tests
+      file: catch-microservice/ci/tasks/task-unit-tests.yml
+
+      # TASK SUCCESS
+      on_success:
+        do:
+          # PUSH NEW REPO TO GITHUB
+          - put: catch-microservice
+            params:
+              repository: catch-microservice  
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text_file: coverage-results/test_coverage.txt
+              text: |
+                From catch-microservice: PASSED job-unit-tests in concourse ci. 
+                $TEXT_FILE_CONTENT
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "success", description: "PASSED job-unit-tests in concourse ci", commit: "catch-microservice" }
+      
+      # TASK FAILURE
+      on_failure:
+        do:
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: FAILED job-unit-tests in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "failure", description: "FAILED job-unit-tests in concourse ci.", commit: "catch-microservice" }
+
+#**********************************************
 - name: job-build-push
+#**********************************************
   plan:
+
+    # GET REPO FROM GITHUB
     - get: catch-microservice
       trigger: true
       passed: [job-unit-tests]
+    # SEND SLACK ALERT  
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
         text: "From catch-microservice: STARTED job-build-push in concourse ci."
+    # SEND GITHUB STATUS
     - put: resource-repo-status
       params: { state: "pending", description: "STARTED job-build-push in concourse ci.", commit: "catch-microservice" }
+
+    # RUN TASK IN REPO USING ALPINE DOCKER IMAGE 
     - task: task-build-push
       file: catch-microservice/ci/tasks/task-build-push.yml
+
+    # PUSH DOCKER IMAGE TO DOCKERHUB  
     - put: resource-dump-to-dockerhub
       params: { build: "dist"}
+      
+      # TASK SUCCESS
       on_success:
         do:
-        - put: resource-slack-alert
-          params:
-            channel: '#jeff-builds'
-            text: "From catch-microservice: PASSED job-build-push in concourse ci."
-        - put: resource-repo-status
-          params: { state: "pending", description: "PASSED job-build-push in concourse ci.", commit: "catch-microservice" }
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: PASSED job-build-push in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "pending", description: "PASSED job-build-push in concourse ci.", commit: "catch-microservice" }
+      
+      # TASK FAILURE    
       on_failure:
         do:
-        - put: resource-slack-alert
-          params:
-            channel: '#jeff-builds'
-            text: "From catch-microservice: FAILED job-build-push in concourse ci."
-        - put: resource-repo-status
-          params: { state: "failure", description: "FAILED job-build-push in concourse ci.", commit: "catch-microservice" }
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: FAILED job-build-push in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "failure", description: "FAILED job-build-push in concourse ci.", commit: "catch-microservice" }
 
+#**********************************************
 - name: job-deploy
+#**********************************************
   plan:
+
+    # GET REPO FROM GITHUB
     - get: catch-microservice
       trigger: true
       passed: [job-build-push]
+    # SEND SLACK ALERT
     - put: resource-slack-alert
       params:
         channel: '#jeff-builds'
         text: "From catch-microservice: STARTED job-deploy in concourse ci."
+    # SEND GITHUB STATUS
     - put: resource-repo-status
       params: { state: "pending", description: "STARTED job-deploy in concourse ci.", commit: "catch-microservice" }
+    
+    # RUN TASK IN REPO USING ALPINE DOCKER IMAGE 
     - task: task-deploy
       file: catch-microservice/ci/tasks/task-deploy.yml
-    - put: resource-marathon
-      params: {app_json: "catch-microservice/code/deploy-marathon/app.json", time_out: 10}
+      params:
+        DOCKER_HOST_SSH_PRIVATE_KEY_FILE: {{docker_host_ssh_private_key_file}}
+        DOCKER_HOST_PORT: '22'
+        DOCKER_HOST_USER: 'jeffry'
+        DOCKER_HOST_IP: '192.168.20.122'
+
+      # TASK SUCCESS
       on_success:
         do:
-        - put: resource-slack-alert
-          params:
-            channel: '#jeff-builds'
-            text: "From catch-microservice: PASSED job-deploy in concourse ci."
-        - put: resource-repo-status
-          params: { state: "success", description: "PASSED job-deploy in concourse ci.", commit: "catch-microservice" }
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: PASSED job-deploy in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "success", description: "PASSED job-deploy in concourse ci.", commit: "catch-microservice" }
+
+      # TASK FAILURE    
       on_failure:
         do:
-        - put: resource-slack-alert
-          params:
-            channel: '#jeff-builds'
-            text: "From catch-microservice: FAILED job-deploy in concourse ci."
-        - put: resource-repo-status
-          params: { state: "failure", description: "FAILED job-deploy in concourse ci.", commit: "catch-microservice" }
+          # SEND SLACK ALERT  
+          - put: resource-slack-alert
+            params:
+              channel: '#jeff-builds'
+              text: "From catch-microservice: FAILED job-deploy in concourse ci."
+          # SEND GITHUB STATUS
+          - put: resource-repo-status
+            params: { state: "failure", description: "FAILED job-deploy in concourse ci.", commit: "catch-microservice" }
 
+#------------------------------------------------------------------------------------------
 resource_types:
 
-- name: slack-notification
-  type: docker-image
-  source:
-    repository: cfcommunity/slack-notification-resource
-    tag: latest
-- name: github-status
-  type: docker-image
-  source:
-    repository: dpb587/github-status-resource
-    tag: master
-- name: marathon-deploy
-  type: docker-image
-  source:
-   repository: ckaznocha/marathon-resource
-   tag: latest
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
+      tag: latest
 
+  - name: github-status
+    type: docker-image
+    source:
+      repository: dpb587/github-status-resource
+      tag: master
+
+#------------------------------------------------------------------------------------------
 resources:
 
-- name: catch-microservice
-  type: git
-  source:
-    #uri: https://github.com/jeffdecola/catch-microservice
-    uri: git@github.com:jeffdecola/catch-microservice.git
-    branch: master
-    private_key: {{git_private_key}}
-- name: resource-dump-to-dockerhub
-  type: docker-image
-  source:
-    repository: jeffdecola/catch-microservice
-    tag: latest
-    username: jeffdecola
-    password: {{dockerhub_password}}
-- name: resource-slack-alert
-  type: slack-notification
-  source:
-    url: {{slack_url}} 
-- name: resource-repo-status 
-  type: github-status
-  source:
-    repository: jeffdecola/catch-microservice 
-    access_token: {{repo_github_token}}
-- name: resource-marathon
-  type: marathon-deploy
-  source:
-    app_id: catch-microservice-long-run
-    uri: http://192.168.20.117:8080
-    
+  - name: catch-microservice
+    type: git
+    icon: github
+    source:
+      #uri: https://github.com/jeffdecola/catch-microservice
+      uri: git@github.com:jeffdecola/catch-microservice.git
+      branch: master
+      private_key: ((git_private_key))
+
+  - name: resource-dump-to-dockerhub
+    type: docker-image
+    icon: docker
+    source:
+      repository: jeffdecola/catch-microservice
+      tag: latest
+      username: jeffdecola
+      password: ((dockerhub_password))
+
+  - name: resource-slack-alert
+    type: slack-notification
+    icon: slack
+    source:
+      url: ((slack_url)) 
+
+  - name: resource-repo-status 
+    type: github-status
+    icon: github
+    source:
+      repository: jeffdecola/catch-microservice 
+      access_token: ((repo_github_token))
