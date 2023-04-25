@@ -6,7 +6,7 @@
 [![codeclimate Maintainability](https://api.codeclimate.com/v1/badges/3bbad863dff19a54d032/maintainability)](https://codeclimate.com/github/JeffDeCola/catch-microservice/maintainability)
 [![codeclimate Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
 [![Docker Pulls](https://badgen.net/docker/pulls/jeffdecola/catch-microservice?icon=docker&label=pulls)](https://hub.docker.com/r/jeffdecola/catch-microservice/)
-[![MIT License](http://img.shields.io/:license-mit-blue.svg)](http://jeffdecola.mit-license.org)
+[![MIT License](https://img.shields.io/:license-mit-blue.svg)](https://jeffdecola.mit-license.org)
 [![jeffdecola.com](https://img.shields.io/badge/website-jeffdecola.com-blue)](https://jeffdecola.com)
 
 ```text
