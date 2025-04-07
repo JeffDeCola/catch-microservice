@@ -1,13 +1,11 @@
 # CATCH MICROSERVICE
 
 [![Tag Latest](https://img.shields.io/github/v/tag/jeffdecola/catch-microservice)](https://github.com/JeffDeCola/catch-microservice/tags)
+[![jeffdecola.com](https://img.shields.io/badge/website-jeffdecola.com-blue)](https://jeffdecola.com)
+[![MIT License](https://img.shields.io/:license-mit-blue.svg)](https://jeffdecola.mit-license.org)
 [![Go Reference](https://pkg.go.dev/badge/github.com/JeffDeCola/catch-microservice.svg)](https://pkg.go.dev/github.com/JeffDeCola/catch-microservice)
 [![Go Report Card](https://goreportcard.com/badge/github.com/JeffDeCola/catch-microservice)](https://goreportcard.com/report/github.com/JeffDeCola/catch-microservice)
-[![codeclimate Maintainability](https://api.codeclimate.com/v1/badges/3bbad863dff19a54d032/maintainability)](https://codeclimate.com/github/JeffDeCola/catch-microservice/maintainability)
-[![codeclimate Issue Count](https://codeclimate.com/github/JeffDeCola/catch-microservice/badges/issue_count.svg)](https://codeclimate.com/github/JeffDeCola/catch-microservice/issues)
 [![Docker Pulls](https://badgen.net/docker/pulls/jeffdecola/catch-microservice?icon=docker&label=pulls)](https://hub.docker.com/r/jeffdecola/catch-microservice/)
-[![MIT License](https://img.shields.io/:license-mit-blue.svg)](https://jeffdecola.mit-license.org)
-[![jeffdecola.com](https://img.shields.io/badge/website-jeffdecola.com-blue)](https://jeffdecola.com)
 
 ```text
 *** THE REPO IS UNDER CONSTRUCTION - CHECK BACK SOON ***
@@ -22,7 +20,7 @@ Table of Contents
 * [SOFTWARE STACK](https://github.com/JeffDeCola/catch-microservice#software-stack)
 * [HOW IT WORKS](https://github.com/JeffDeCola/catch-microservice#how-it-works)
   * [STARTING AND PLAYING THE GAME](https://github.com/JeffDeCola/catch-microservice#starting-and-playing-the-game)
-  * [RETSful API using JSON](https://github.com/JeffDeCola/catch-microservice#retsful-api-using-json)
+  * [RESTful API using JSON](https://github.com/JeffDeCola/catch-microservice#restful-api-using-json)
   * [CANIPLAY - PUT /state](https://github.com/JeffDeCola/catch-microservice#caniplay---put-state)
   * [UPDATESTATE - PUT /state](https://github.com/JeffDeCola/catch-microservice#updatestate---put-state)
   * [THROW BALL - PUT /state](https://github.com/JeffDeCola/catch-microservice#throw-ball---put-state)
@@ -35,13 +33,12 @@ Table of Contents
   * [STEP 2 - BUILD (DOCKER IMAGE VIA DOCKERFILE)](https://github.com/JeffDeCola/catch-microservice#step-2---build-docker-image-via-dockerfile)
   * [STEP 3 - PUSH (TO DOCKERHUB)](https://github.com/JeffDeCola/catch-microservice#step-3---push-to-dockerhub)
   * [STEP 4 - DEPLOY (TO DOCKER)](https://github.com/JeffDeCola/catch-microservice#step-4---deploy-to-docker)
-  * [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
+* [CONTINUOUS INTEGRATION & DEPLOYMENT](https://github.com/JeffDeCola/catch-microservice#continuous-integration--deployment)
 
 Documentation and Reference
 
-* [Microservices cheat sheet](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/software-architectures/microservices/microservices-cheat-sheet)
-* The
-  [catch-microservice docker image](https://hub.docker.com/r/jeffdecola/catch-microservice)
+* [microservices](https://github.com/JeffDeCola/my-cheat-sheets/tree/master/software/development/software-architectures/microservices/microservices-cheat-sheet)
+* [catch-microservice docker image](https://hub.docker.com/r/jeffdecola/catch-microservice)
   on DockerHub
 * This repos
   [github webpage](https://jeffdecola.github.io/catch-microservice/)
@@ -151,7 +148,7 @@ via his `friendslist` if other kids are present (`updatestate`).
 When a kid catches the ball (`throw`) he tells everyone in his `friendslist`
 that he has the ball (`updatestate`).  Everyone will update their `whohasball`  state.
 
-### RETSful API using JSON
+### RESTful API using JSON
 
 To accomplish the above logic, a RESTful API with json shall be used.
 
@@ -423,7 +420,7 @@ docker logs catch-microservice
 docker rm -f catch-microservice
 ```
 
-### CONTINUOUS INTEGRATION & DEPLOYMENT
+## CONTINUOUS INTEGRATION & DEPLOYMENT
 
 Refer to
 [ci-README.md](https://github.com/JeffDeCola/catch-microservice/blob/master/ci-README.md)
